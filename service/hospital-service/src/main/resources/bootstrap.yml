@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: hospital-service
+  profiles:
+    active: ${PROFILE:default}
+  cloud:
+    config:
+      uri: ${CONFIG_URL}
+      username: ${CONFIG_USER}
+      password: ${CONFIG_PASSWORD}
+      fail-fast: true
+      retry:
+        initial-interval: 3000
+        max-attempts: 10
+        max-interval: 1000

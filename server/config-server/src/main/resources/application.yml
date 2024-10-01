@@ -1,0 +1,20 @@
+server:
+  port: ${PORT:8080}
+
+spring:
+  profiles:
+    active: native
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        native:
+          search-locations:
+            - classpath:/configs
+  security:
+    user:
+      name: ${CONFIG_USER}
+      password: ${CONFIG_PASSWORD}
+      roles:
+        - ${CONFIG_ROLE:SYSTEM}

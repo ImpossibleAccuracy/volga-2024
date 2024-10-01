@@ -1,0 +1,78 @@
+x-discovery-client-vars: &discovery-props
+  DISCOVERY_HOST: discovery-server
+  CONFIG_URL: http://config-server:8080
+
+services:
+  config-server:
+    build:
+      dockerfile: server/config-server/Dockerfile
+      context: .
+    env_file:
+      - .env
+    ports:
+      - "8001:8080"
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  discovery-server:
+    depends_on:
+      config-server:
+        condition: service_healthy
+    build:
+      dockerfile: server/discovery-server/Dockerfile
+      context: .
+    env_file:
+      - .env
+    environment: *discovery-props
+    ports:
+      - "8002:${DISCOVERY_PORT}"
+    healthcheck:
+      test: "curl --fail --silent localhost:${DISCOVERY_PORT}/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  auth-service:
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+    build:
+      dockerfile: service/auth-service/Dockerfile
+      context: .
+    env_file:
+      - .env
+    environment: *discovery-props
+    ports:
+      - "8010:${AUTH_SERVICE_PORT}"
+    healthcheck:
+      test: "curl --fail --silent localhost:${AUTH_SERVICE_PORT}/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  hospital-service:
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+    build:
+      dockerfile: service/hospital-service/Dockerfile
+      context: .
+    env_file:
+      - .env
+    environment: *discovery-props
+    ports:
+      - "8011:8080"
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

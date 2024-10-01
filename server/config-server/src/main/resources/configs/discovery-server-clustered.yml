@@ -1,0 +1,18 @@
+server:
+  port: ${DISCOVERY_PORT}
+
+spring:
+  security:
+    user:
+      name: ${DISCOVERY_USER}
+      password: ${DISCOVERY_PASSWORD}
+      role: ${DISCOVERY_ROLE:SYSTEM}
+
+eureka:
+  instance:
+    hostname: ${DISCOVERY_HOST}
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_USER}:${DISCOVERY_PASSWORD}@${DISCOVERY_HOST}:${DISCOVERY_PORT}/eureka/

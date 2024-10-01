@@ -1,0 +1,25 @@
+server:
+  port: ${AUTH_SERVICE_PORT:8080}
+  servlet:
+    context-path: /api/auth
+
+#spring:
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: validate
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    properties:
+#      hibernate:
+#        format_sql: false
+#  cloud:
+#    loadbalancer:
+#      ribbon:
+#        enabled: true
+
+eureka:
+  client:
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_USER}:${DISCOVERY_PASSWORD}@${DISCOVERY_HOST}:${DISCOVERY_PORT}/eureka/
