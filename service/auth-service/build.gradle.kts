@@ -19,7 +19,4 @@ dependencies {
     // LOMBOK
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
-
-    // OTHER DEPENDENCIES
-    implementation(libs.jackson.kotlin)
 }
