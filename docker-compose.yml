@@ -1,6 +1,6 @@
 x-discovery-client-vars: &discovery-props
   DISCOVERY_HOST: discovery-server
-  CONFIG_URL: http://config-server:8080
+  CONFIG_URL: http://config-server:${CONFIG_PORT}
 
 services:
   config-server:
@@ -10,9 +10,9 @@ services:
     env_file:
       - .env
     ports:
-      - "8001:8080"
+      - "8001:${CONFIG_PORT}"
     healthcheck:
-      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      test: "curl --fail --silent localhost:${CONFIG_PORT}/actuator/health | grep UP || exit 1"
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,7 +30,7 @@ services:
     ports:
       - "8002:${DISCOVERY_PORT}"
     healthcheck:
-      test: "curl --fail --silent localhost:${DISCOVERY_PORT}/actuator/health | grep UP || exit 1"
+      test: "curl --fail --silent localhost:${HEALTHCHECK_PORT}/actuator/health | grep UP || exit 1"
       interval: 10s
       timeout: 5s
       retries: 5
@@ -50,7 +50,7 @@ services:
     ports:
       - "8010:${AUTH_SERVICE_PORT}"
     healthcheck:
-      test: "curl --fail --silent localhost:${AUTH_SERVICE_PORT}/actuator/health | grep UP || exit 1"
+      test: "curl --fail --silent localhost:${HEALTHCHECK_PORT}/actuator/health | grep UP || exit 1"
       interval: 10s
       timeout: 5s
       retries: 5
@@ -69,9 +69,9 @@ services:
       - .env
     environment: *discovery-props
     ports:
-      - "8011:8080"
+      - "8011:${HOSPITAL_SERVICE_PORT}"
     healthcheck:
-      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      test: "curl --fail --silent localhost:${HEALTHCHECK_PORT}/actuator/health | grep UP || exit 1"
       interval: 10s
       timeout: 5s
       retries: 5

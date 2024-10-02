@@ -1,3 +1,7 @@
+management:
+  server:
+    port: ${HEALTHCHECK_PORT}
+
 server:
   port: ${AUTH_SERVICE_PORT:8080}
   servlet:

@@ -1,3 +1,7 @@
+management:
+  server:
+    port: ${HEALTHCHECK_PORT}
+
 server:
   port: ${DISCOVERY_PORT}
 

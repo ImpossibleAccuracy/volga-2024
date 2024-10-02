@@ -1,5 +1,9 @@
+management:
+  server:
+    port: ${HEALTHCHECK_PORT}
+
 server:
-  port: 8080
+  port: ${HOSPITAL_SERVICE_PORT}
   servlet:
     context-path: /api/hospital
 
