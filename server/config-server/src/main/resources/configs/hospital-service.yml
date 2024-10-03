@@ -4,13 +4,16 @@ management:
 
 server:
   port: ${HOSPITAL_SERVICE_PORT}
-  servlet:
-    context-path: /api/hospital
 
-services:
-  auth: http://auth-service:8080/api/auth
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: true
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     fetch-registry: true
     serviceUrl:

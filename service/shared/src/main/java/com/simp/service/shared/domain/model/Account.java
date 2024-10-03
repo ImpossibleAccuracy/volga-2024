@@ -1,11 +1,11 @@
 package com.simp.service.shared.domain.model;
 
 public interface Account {
-    Long getId();
+    long id();
 
-    String getUsername();
+    String username();
 
-    String getFirstName();
+    String firstName();
 
-    String getLastName();
+    String lastName();
 }

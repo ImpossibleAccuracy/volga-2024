@@ -21,5 +21,5 @@ dependencies {
     annotationProcessor(libs.lombok)
 
     // OTHER DEPENDENCIES
-    implementation(libs.jackson.kotlin)
+    // implementation(libs.jackson.kotlin)
 }

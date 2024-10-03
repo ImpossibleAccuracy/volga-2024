@@ -1,45 +1,43 @@
 package com.simp.service.shared.data.service;
 
-import com.simp.service.shared.data.clients.AuthClient;
+import com.simp.service.shared.data.clients.AccountClient;
+import com.simp.service.shared.data.contants.Services;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.service.AuthService;
-import com.simp.service.shared.server.payload.request.SignInRequest;
-import com.simp.service.shared.server.payload.request.SignUpRequest;
-import io.reactivex.rxjava3.core.Maybe;
-import io.reactivex.rxjava3.core.Single;
+import com.simp.service.shared.server.payload.account.request.SignInRequest;
+import com.simp.service.shared.server.payload.account.request.SignUpRequest;
+import com.simp.service.shared.server.payload.account.response.AuthResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import reactor.core.publisher.Mono;
 
 @Service
-@ConditionalOnBean(AuthClient.class)
+@ConditionalOnExpression("${" + Services.Account.Key + ":true}")
 @RequiredArgsConstructor
 public class NetworkAuthService implements AuthService {
-    private final AuthClient authClient;
+    private final AccountClient accountClient;
 
     @Override
-    public Maybe<Account> signUp(String lastName, String firstName, String username, String password) {
+    public Mono<Account> signUp(String lastName, String firstName, String username, String password) {
         SignUpRequest request = new SignUpRequest(lastName, firstName, username, password);
 
-        return authClient
-                .signUp(request)
-                .mapOptional((authResponse -> Optional.ofNullable(authResponse.account())));
+        return accountClient.signUp(request)
+                .map(AuthResponse::account); // TODO
     }
 
     @Override
-    public Maybe<Account> signIn(String username, String password) {
+    public Mono<Account> signIn(String username, String password) {
         SignInRequest request = new SignInRequest(username, password);
 
-        return authClient
+        return accountClient
                 .signIn(request)
-                .mapOptional((authResponse -> Optional.ofNullable(authResponse.account())));
+                .map(AuthResponse::account); // TODO
     }
 
     @Override
-    public Single<Void> signOut(Caller account) {
-        return authClient.signOut(account.token());
+    public Mono<Void> signOut(Caller account) {
+        return accountClient.signOut(account.token());
     }
 }

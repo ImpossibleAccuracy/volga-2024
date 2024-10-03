@@ -1,9 +1,7 @@
 package com.simp.service.shared.domain.service;
 
-import io.reactivex.rxjava3.core.Maybe;
+import reactor.core.publisher.Mono;
 
 public interface TokenService {
-    Maybe<Void> validateToken(String token);
-
-//    Single<String> generateToken(Account account);
+    Mono<Boolean> validateToken(String token);
 }

@@ -23,5 +23,5 @@ include(
 include(
     ":service:shared",
     ":service:auth-service",
-//    ":service:hospital-service"
+    ":service:hospital-service"
 )

@@ -3,11 +3,11 @@ package com.simp.service.shared.domain.service;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Doctor;
 import com.simp.service.shared.domain.model.Pagination;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Maybe;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface DoctorService {
-    Maybe<Doctor> getDoctor(Caller caller, Long id);
+    Mono<Doctor> getDoctor(Caller caller, Long id);
 
-    Flowable<Doctor> getDoctorList(Caller caller, Pagination pagination);
+    Flux<Doctor> getDoctorList(Caller caller, Pagination pagination);
 }

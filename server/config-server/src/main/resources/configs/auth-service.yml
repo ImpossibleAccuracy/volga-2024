@@ -4,25 +4,26 @@ management:
 
 server:
   port: ${AUTH_SERVICE_PORT:8080}
-  servlet:
-    context-path: /api/auth
 
-#spring:
-#  jpa:
-#    show-sql: true
-#    hibernate:
-#      ddl-auto: validate
-#      naming:
-#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-#    properties:
-#      hibernate:
-#        format_sql: false
-#  cloud:
-#    loadbalancer:
-#      ribbon:
-#        enabled: true
+app:
+  token:
+    secret: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    issuer: http://localhost/
+    audience: http://localhost/
+    claimName: http://localhost/
+    ttl: 604800000
+  services:
+    auth: false
+
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: true
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     fetch-registry: true
     serviceUrl:

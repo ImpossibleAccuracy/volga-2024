@@ -1,6 +1,6 @@
 spring:
   application:
-    name: ${HOSPITAL_SERVICE_NAME}
+    name: hospital-service
   profiles:
     active: ${PROFILE:default}
   cloud:

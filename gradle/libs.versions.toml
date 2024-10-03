@@ -3,8 +3,9 @@ spring = "3.3.4"
 spring-retry = "2.0.9"
 spring-cloud = "4.1.3"
 
-rxjava = "3.1.9"
+reactivefeign = "4.2.1"
 lombok = "1.18.34"
+auth0 = "4.4.0"
 
 gson = "2.11.0"
 jackson = "2.15.2"
@@ -18,7 +19,6 @@ spring-security = { module = "org.springframework.boot:spring-boot-starter-secur
 spring-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "spring" }
 
 # SPRING CLOUD
-spring-cloud-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "spring-cloud" }
 spring-cloud-eureka-client = { module = "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client", version.ref = "spring-cloud" }
 spring-cloud-config-client = { module = "org.springframework.cloud:spring-cloud-config-client", version.ref = "spring-cloud" }
 spring-cloud-loadbalancer = { module = "org.springframework.cloud:spring-cloud-starter-loadbalancer", version.ref = "spring-cloud" }
@@ -28,11 +28,16 @@ spring-cloud-eureka-server = { module = "org.springframework.cloud:spring-cloud-
 spring-cloud-config-server = { module = "org.springframework.cloud:spring-cloud-config-server", version.ref = "spring-cloud" }
 spring-cloud-bootstrap = { module = "org.springframework.cloud:spring-cloud-starter-bootstrap", version.ref = "spring-cloud" }
 
-# REACTIVE
-rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+# FEIGN
+reactivefeign-webclient = { module = "com.playtika.reactivefeign:feign-reactor-webclient", version.ref = "reactivefeign" }
+reactivefeign-cloud = { module = "com.playtika.reactivefeign:feign-reactor-cloud", version.ref = "reactivefeign" }
+reactivefeign-configuration = { module = "com.playtika.reactivefeign:feign-reactor-spring-configuration", version.ref = "reactivefeign" }
 
 # LOMBOK
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# JWT
+auth0 = { module = "com.auth0:java-jwt", version.ref = "auth0" }
 
 # SERIALIZERS
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

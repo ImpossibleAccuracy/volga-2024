@@ -3,14 +3,13 @@ package com.simp.service.shared.domain.service;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Pagination;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Maybe;
-import io.reactivex.rxjava3.core.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 public interface AccountService {
-    Single<Account> newAccount(
+    Mono<Account> newAccount(
             Caller caller,
             String lastName,
             String firstName,
@@ -18,17 +17,17 @@ public interface AccountService {
             String password,
             List<String> roles);
 
-    Maybe<Account> getAccount(Caller caller, Long id);
+    Mono<Account> getAccount(Caller caller, Long id);
 
-    Flowable<Account> getAccountList(Caller caller, Pagination pagination);
+    Flux<Account> getAccountList(Caller caller, Pagination pagination);
 
-    Single<Account> updateAccount(
+    Mono<Account> updateAccount(
             Caller caller,
             String lastName,
             String firstName,
             String password);
 
-    Single<Account> updateAccount(
+    Mono<Account> updateAccount(
             Caller caller,
             Account target,
             String username,
@@ -37,5 +36,5 @@ public interface AccountService {
             String password,
             List<String> roles);
 
-    Single<Void> deleteAccount(Caller caller, Account target);
+    Mono<Void> deleteAccount(Caller caller, Account target);
 }

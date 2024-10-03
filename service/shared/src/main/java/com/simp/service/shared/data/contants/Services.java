@@ -1,9 +1,16 @@
 package com.simp.service.shared.data.contants;
 
-public class Services {
-    public static final String AUTH_SERVICE_KEY = "services.auth";
+import lombok.RequiredArgsConstructor;
 
-    public static final class Auth {
-        public static final String AUTH_HEADER = "Authorization";
+@RequiredArgsConstructor
+public final class Services {
+    public static final class Account {
+        public static final String Name = "auth-service";
+        public static final String Key = "app.services.auth";
+    }
+
+    public static final class Hospital {
+        public static final String Name = "hospital-service";
+        public static final String Key = "app.services.hospital";
     }
 }

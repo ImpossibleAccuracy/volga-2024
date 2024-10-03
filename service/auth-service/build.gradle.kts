@@ -19,4 +19,7 @@ dependencies {
     // LOMBOK
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
+
+    // OTHER
+    implementation(libs.auth0)
 }

@@ -1,7 +1,7 @@
 package com.simp.service.shared.domain.model;
 
 public interface Doctor {
-    Long getId();
+    long id();
 
-    String getName();
+    String name();
 }

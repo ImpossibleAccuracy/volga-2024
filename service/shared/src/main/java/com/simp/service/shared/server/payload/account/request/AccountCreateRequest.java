@@ -1,8 +1,8 @@
-package com.simp.service.shared.server.payload.request;
+package com.simp.service.shared.server.payload.account.request;
 
 import java.util.List;
 
-public record AccountUpdateFullRequest(
+public record AccountCreateRequest(
         String lastName,
         String firstName,
         String username,
