@@ -2,6 +2,7 @@ package com.simp.service.auth.domain.service;
 
 import com.simp.service.auth.data.model.AccountEntity;
 import com.simp.service.auth.data.repository.AccountRepository;
+import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Pagination;
@@ -36,7 +37,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public Mono<? extends Account> getAccountUnsecured(Long id) {
-        return accountRepository.findByIdAndDeletedFalse(id);
+        return accountRepository
+                .findByIdAndDeletedFalse(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Account not found")));
     }
 
     @Override
@@ -89,12 +92,6 @@ public class AccountServiceImpl implements AccountService {
     public Mono<Void> deleteAccount(Caller caller, Account target) {
         // TODO: check access
 
-        AccountEntity update = AccountEntity.builder()
-                .id(target.id())
-                .deleted(true)
-                .build();
-
-        // TODO: hide deleted users from all other endpoints
-        return accountRepository.save(update).then();
+        return accountRepository.deleteAccountSoft(target.id());
     }
 }

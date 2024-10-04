@@ -30,7 +30,17 @@ public interface AccountRepository extends ReactiveCrudRepository<AccountEntity,
             select a.* from "Account" a
             inner join "Role_Account" ra on ra.account_id = a.id
             inner join "Role" r on r.id = ra.role_id
-            where a.name like '%:name%'
+            where a.deleted = false
+                and r.title = :role
+            limit :limit offset :offset
+            """)
+    Flux<AccountEntity> findAllByNameLikeAndRoleExistsPaginated(String role, int offset, int limit);
+
+    @Query(value = """
+            select a.* from "Account" a
+            inner join "Role_Account" ra on ra.account_id = a.id
+            inner join "Role" r on r.id = ra.role_id
+            where CONCAT_WS(' ', a.first_name, a.last_name) like :name
                 and a.deleted = false
                 and r.title = :role
             limit :limit offset :offset
@@ -41,5 +51,12 @@ public interface AccountRepository extends ReactiveCrudRepository<AccountEntity,
 
     Mono<Boolean> existsByUsernameAndDeletedFalse(String username);
 
-    Mono<AccountEntity> findByIdAndDeletedFalse(long id);
+    Mono<AccountEntity> findByIdAndDeletedFalse(Long id);
+
+    @Query("""
+            update "Account"
+            set deleted = true
+            where id = :id
+            """)
+    Mono<Void> deleteAccountSoft(Long id);
 }

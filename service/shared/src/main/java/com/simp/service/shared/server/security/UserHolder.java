@@ -1,6 +1,6 @@
 package com.simp.service.shared.server.security;
 
-import com.simp.service.shared.data.contants.AuthConstants;
+import com.simp.service.shared.contants.AuthConstants;
 import com.simp.service.shared.domain.exception.UnauthorizedException;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;

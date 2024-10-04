@@ -1,7 +1,7 @@
 package com.simp.service.shared.data.clients;
 
-import com.simp.service.shared.data.contants.AuthConstants;
-import com.simp.service.shared.data.contants.Services;
+import com.simp.service.shared.contants.AuthConstants;
+import com.simp.service.shared.contants.Services;
 import com.simp.service.shared.server.payload.account.request.*;
 import com.simp.service.shared.server.payload.account.response.AuthResponse;
 import com.simp.service.shared.server.payload.account.response.TokenValidateResponse;

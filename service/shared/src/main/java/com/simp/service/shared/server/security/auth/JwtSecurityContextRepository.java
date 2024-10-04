@@ -1,6 +1,6 @@
 package com.simp.service.shared.server.security.auth;
 
-import com.simp.service.shared.data.contants.AuthConstants;
+import com.simp.service.shared.contants.AuthConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

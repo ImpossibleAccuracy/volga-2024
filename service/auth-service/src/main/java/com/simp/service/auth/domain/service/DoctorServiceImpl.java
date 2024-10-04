@@ -1,6 +1,7 @@
 package com.simp.service.auth.domain.service;
 
 import com.simp.service.auth.data.repository.AccountRepository;
+import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Pagination;
@@ -18,15 +19,24 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Mono<? extends Account> getDoctor(Caller caller, Long id) {
-        return accountRepository.findByIdAndRole(id, Roles.DOCTOR.dbName());
+        return accountRepository
+                .findByIdAndRole(id, Roles.DOCTOR.dbName())
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Doctor not found")));
     }
 
     @Override
     public Flux<? extends Account> getDoctorList(Caller caller, String nameFilter, Pagination pagination) {
-        return accountRepository.findAllByNameLikeAndRoleExistsPaginated(
-                nameFilter,
-                Roles.DOCTOR.dbName(),
-                pagination.from(),
-                pagination.count());
+        if (nameFilter == null || nameFilter.isBlank()) {
+            return accountRepository.findAllByNameLikeAndRoleExistsPaginated(
+                    Roles.DOCTOR.dbName(),
+                    pagination.from(),
+                    pagination.count());
+        } else {
+            return accountRepository.findAllByNameLikeAndRoleExistsPaginated(
+                    "%" + nameFilter + "%",
+                    Roles.DOCTOR.dbName(),
+                    pagination.from(),
+                    pagination.count());
+        }
     }
 }

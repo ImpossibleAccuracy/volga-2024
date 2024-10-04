@@ -1,13 +1,12 @@
 package com.simp.service.shared.data.service;
 
 import com.simp.service.shared.data.clients.AccountClient;
-import com.simp.service.shared.data.contants.Services;
+import com.simp.service.shared.contants.Services;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Pagination;
 import com.simp.service.shared.domain.service.DoctorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;

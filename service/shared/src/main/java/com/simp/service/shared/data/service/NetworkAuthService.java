@@ -1,7 +1,7 @@
 package com.simp.service.shared.data.service;
 
 import com.simp.service.shared.data.clients.AccountClient;
-import com.simp.service.shared.data.contants.Services;
+import com.simp.service.shared.contants.Services;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Authorization;
 import com.simp.service.shared.domain.model.Caller;
