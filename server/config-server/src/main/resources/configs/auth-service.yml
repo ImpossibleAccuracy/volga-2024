@@ -3,7 +3,7 @@ management:
     port: ${HEALTHCHECK_PORT}
 
 server:
-  port: ${AUTH_SERVICE_PORT:8080}
+  port: ${AUTH_SERVICE_PORT}
 
 app:
   token:
@@ -20,6 +20,10 @@ spring:
     loadbalancer:
       ribbon:
         enabled: true
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/stage
+    username: user
+    password: password
 
 eureka:
   instance:

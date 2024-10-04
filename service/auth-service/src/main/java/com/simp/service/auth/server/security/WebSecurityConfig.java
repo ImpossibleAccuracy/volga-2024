@@ -1,5 +1,7 @@
 package com.simp.service.auth.server.security;
 
+import com.simp.service.shared.domain.service.AuthService;
+import com.simp.service.shared.server.security.BaseSecurityConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
@@ -12,8 +14,8 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableReactiveMethodSecurity
 public class WebSecurityConfig {
     @Bean
-    SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
-        return http
+    SecurityWebFilterChain filterChain(AuthService authService, ServerHttpSecurity http) {
+        return BaseSecurityConfiguration.applySecurityFilter(authService, http)
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .build();
     }

@@ -3,6 +3,7 @@ package com.simp.service.shared.data.service;
 import com.simp.service.shared.data.clients.AccountClient;
 import com.simp.service.shared.data.contants.Services;
 import com.simp.service.shared.domain.model.Account;
+import com.simp.service.shared.domain.model.Authorization;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.service.AuthService;
 import com.simp.service.shared.server.payload.account.request.SignInRequest;
@@ -20,7 +21,7 @@ public class NetworkAuthService implements AuthService {
     private final AccountClient accountClient;
 
     @Override
-    public Mono<Account> signUp(String lastName, String firstName, String username, String password) {
+    public Mono<? extends Account> signUp(String lastName, String firstName, String username, String password) {
         SignUpRequest request = new SignUpRequest(lastName, firstName, username, password);
 
         return accountClient.signUp(request)
@@ -28,7 +29,7 @@ public class NetworkAuthService implements AuthService {
     }
 
     @Override
-    public Mono<Account> signIn(String username, String password) {
+    public Mono<? extends Account> signIn(String username, String password) {
         SignInRequest request = new SignInRequest(username, password);
 
         return accountClient
@@ -39,5 +40,10 @@ public class NetworkAuthService implements AuthService {
     @Override
     public Mono<Void> signOut(Caller account) {
         return accountClient.signOut(account.token());
+    }
+
+    @Override
+    public Mono<? extends Authorization> authUser(String token) {
+        return accountClient.getAccountAuthorization(token);
     }
 }

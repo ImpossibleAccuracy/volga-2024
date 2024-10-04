@@ -1,37 +1,35 @@
 package com.simp.service.shared.server.security;
 
-import com.simp.service.shared.data.contants.AuthContants;
+import com.simp.service.shared.data.contants.AuthConstants;
 import com.simp.service.shared.domain.exception.UnauthorizedException;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import reactor.core.publisher.Mono;
 
 public final class UserHolder {
-    public static Account getCurrentAccount() {
-        return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public static Mono<Account> getCurrentAccount() {
+        return ReactiveSecurityContextHolder.getContext()
+                .map(ctx -> {
+                    try {
+                        return ((Account) ctx.getAuthentication().getPrincipal());
+                    } catch (ClassCastException e) {
+                        return null;
+                    }
+                });
     }
 
-    public static Account requireAccount() {
-        Account account = getCurrentAccount();
-
-        if (account == null) {
-            throw new UnauthorizedException("No user presented");
-        }
-
-        return account;
+    public static Mono<Account> requireAccount() {
+        return getCurrentAccount()
+                .switchIfEmpty(Mono.error(new UnauthorizedException("No user presented")));
     }
 
-    public static Caller requireCaller(HttpHeaders headers) {
-        Account account = getCurrentAccount();
-
-        if (account == null) {
-            throw new UnauthorizedException("No user presented");
-        }
-
-        return new Caller(
-                headers.getFirst(AuthContants.AUTH_HEADER),
-                account
-        );
+    public static Mono<Caller> requireCaller(HttpHeaders headers) {
+        return requireAccount()
+                .map(account -> new Caller(
+                        headers.getFirst(AuthConstants.AUTH_HEADER),
+                        account
+                ));
     }
 }

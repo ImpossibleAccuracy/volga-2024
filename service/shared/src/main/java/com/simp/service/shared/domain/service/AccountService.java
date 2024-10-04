@@ -9,25 +9,25 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 public interface AccountService {
-    Mono<Account> newAccount(
+    Mono<? extends Account> newAccount(
             Caller caller,
-            String lastName,
             String firstName,
+            String lastName,
             String username,
             String password,
             List<String> roles);
 
-    Mono<Account> getAccount(Caller caller, Long id);
+    Mono<? extends Account> getAccount(Caller caller, Long id);
 
-    Flux<Account> getAccountList(Caller caller, Pagination pagination);
+    Flux<? extends Account> getAccountList(Caller caller, Pagination pagination);
 
-    Mono<Account> updateAccount(
+    Mono<? extends Account> updateAccount(
             Caller caller,
             String lastName,
             String firstName,
             String password);
 
-    Mono<Account> updateAccount(
+    Mono<? extends Account> updateAccount(
             Caller caller,
             Account target,
             String username,

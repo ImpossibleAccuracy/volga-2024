@@ -24,43 +24,44 @@ public class AccountController {
     @PostMapping(ApiScheme.AccountService.Account.Accounts)
     public Mono<AccountDto> create(@RequestHeader HttpHeaders headers,
                                    @RequestBody AccountCreateRequest request) {
-        var caller = UserHolder.requireCaller(headers);
-
-        return accountService
-                .newAccount(
-                        caller,
-                        request.firstName(),
-                        request.lastName(),
-                        request.username(),
-                        request.password(),
-                        request.roles())
+        return UserHolder
+                .requireCaller(headers)
+                .flatMap(caller -> accountService
+                        .newAccount(
+                                caller,
+                                request.firstName(),
+                                request.lastName(),
+                                request.username(),
+                                request.password(),
+                                request.roles()))
                 .map(Mappers::toDto);
     }
 
     @GetMapping(ApiScheme.AccountService.Account.Me)
     public Mono<AccountDto> getMe() {
-        return Mono.just(
-                Mappers.toDto(UserHolder.requireAccount()));
+        return UserHolder
+                .requireAccount()
+                .map(Mappers::toDto);
     }
 
     // TODO: admin
     @GetMapping(ApiScheme.AccountService.Account.Accounts)
     public Flux<AccountDto> getAll(@RequestHeader HttpHeaders headers,
                                    PaginationRequest request) {
-        var caller = UserHolder.requireCaller(headers);
-
-        return accountService
-                .getAccountList(caller, Mappers.fromRequest(request))
+        return UserHolder
+                .requireCaller(headers)
+                .flatMapMany(caller -> accountService
+                        .getAccountList(caller, Mappers.fromRequest(request)))
                 .map(Mappers::toDto);
     }
 
     @PutMapping(ApiScheme.AccountService.Account.Update)
     public Mono<AccountDto> updateMe(@RequestHeader HttpHeaders headers,
                                      @RequestBody AccountUpdateRequest request) {
-        var caller = UserHolder.requireCaller(headers);
-
-        return accountService
-                .updateAccount(caller, request.firstName(), request.lastName(), request.password())
+        return UserHolder
+                .requireCaller(headers)
+                .flatMap(caller -> accountService
+                        .updateAccount(caller, request.firstName(), request.lastName(), request.password()))
                 .map(Mappers::toDto);
     }
 
@@ -69,19 +70,19 @@ public class AccountController {
     public Mono<AccountDto> updateAccount(@PathVariable("id") long id,
                                           @RequestHeader HttpHeaders headers,
                                           @RequestBody AccountCreateRequest request) {
-        var caller = UserHolder.requireCaller(headers);
-
-        return accountService
-                .getAccount(caller, id)
-                .flatMap(target -> accountService.updateAccount(
-                        caller,
-                        target,
-                        request.firstName(),
-                        request.lastName(),
-                        request.username(),
-                        request.password(),
-                        request.roles())
-                )
+        return UserHolder
+                .requireCaller(headers)
+                .flatMap(caller -> accountService
+                        .getAccount(caller, id)
+                        .flatMap(target -> accountService.updateAccount(
+                                caller,
+                                target,
+                                request.firstName(),
+                                request.lastName(),
+                                request.username(),
+                                request.password(),
+                                request.roles())
+                        ))
                 .map(Mappers::toDto);
     }
 
@@ -90,10 +91,10 @@ public class AccountController {
     @DeleteMapping(ApiScheme.AccountService.Account.AccountDetails)
     public Mono<Void> deleteAccount(@PathVariable("id") long id,
                                     @RequestHeader HttpHeaders headers) {
-        var caller = UserHolder.requireCaller(headers);
-
-        return accountService
-                .getAccount(caller, id)
-                .flatMap(target -> accountService.deleteAccount(caller, target));
+        return UserHolder
+                .requireCaller(headers)
+                .flatMap(caller -> accountService
+                        .getAccount(caller, id)
+                        .flatMap(target -> accountService.deleteAccount(caller, target)));
     }
 }

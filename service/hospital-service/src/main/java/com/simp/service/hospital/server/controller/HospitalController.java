@@ -3,6 +3,7 @@ package com.simp.service.hospital.server.controller;
 import com.simp.service.shared.domain.service.AuthService;
 import com.simp.service.shared.server.mapper.dto.Mappers;
 import com.simp.service.shared.server.payload.dto.AccountDto;
+import com.simp.service.shared.server.security.UserHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,13 @@ public class HospitalController {
     public Mono<AccountDto> sample() {
         return authService
                 .signIn("testuser", "testuserpass")
+                .map(Mappers::toDto);
+    }
+
+    @GetMapping("/sample-secured")
+    public Mono<AccountDto> sampleSecured() {
+        return UserHolder
+                .requireAccount()
                 .map(Mappers::toDto);
     }
 }

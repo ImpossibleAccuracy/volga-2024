@@ -5,6 +5,10 @@ management:
 server:
   port: ${HOSPITAL_SERVICE_PORT}
 
+app:
+  services:
+    hospital: false
+
 spring:
   cloud:
     loadbalancer:

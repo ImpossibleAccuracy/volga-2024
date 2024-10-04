@@ -8,13 +8,14 @@ public final class ApiScheme {
             public static final String SignOut = "/api/Authentication/SignOut";
             public static final String Validate = "/api/Authentication/Validate";
             public static final String Refresh = "/api/Authentication/Refresh";
+            public static final String Full = "/api/Authentication/Full";
         }
 
         public static final class Account {
             public static final String Me = "/api/Accounts/Me";
             public static final String Update = "/api/Accounts/Update";
-            public static final String Accounts = "/api/Authentication/Accounts";
-            public static final String AccountDetails = "/api/Authentication/Accounts/{id}";
+            public static final String Accounts = "/api/Accounts";
+            public static final String AccountDetails = "/api/Accounts/{id}";
         }
 
         public static final class Doctors {

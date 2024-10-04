@@ -11,6 +11,8 @@ dependencies {
     implementation(libs.spring.web)
     implementation(libs.spring.actuator)
     developmentOnly(libs.spring.devtools)
+    implementation(libs.netty.core)
+    implementation(libs.netty.http)
 
     // SPRING CLOUD DEPENDENCIES
     implementation(libs.bundles.spring.cloud.client)
@@ -19,7 +21,4 @@ dependencies {
     // LOMBOK
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
-
-    // OTHER DEPENDENCIES
-    // implementation(libs.jackson.kotlin)
 }

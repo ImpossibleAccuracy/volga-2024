@@ -3,7 +3,7 @@ package com.simp.service.auth.server.controller;
 import com.simp.service.shared.domain.service.DoctorService;
 import com.simp.service.shared.server.mapper.dto.Mappers;
 import com.simp.service.shared.server.payload.doctor.DoctorsFilterRequest;
-import com.simp.service.shared.server.payload.dto.DoctorDto;
+import com.simp.service.shared.server.payload.dto.AccountDto;
 import com.simp.service.shared.server.scheme.ApiScheme;
 import com.simp.service.shared.server.security.UserHolder;
 import lombok.RequiredArgsConstructor;
@@ -21,23 +21,23 @@ public class DoctorsController {
     private final DoctorService doctorService;
 
     @GetMapping(ApiScheme.AccountService.Doctors.Doctors)
-    public Flux<DoctorDto> getAll(@RequestHeader HttpHeaders headers,
-                                  DoctorsFilterRequest request) {
-        var caller = UserHolder.requireCaller(headers);
-
-        return doctorService
-                .getDoctorList(caller, Mappers.fromRequest(request))
+    public Flux<AccountDto> getAll(@RequestHeader HttpHeaders headers,
+                                   DoctorsFilterRequest request) {
+        return UserHolder
+                .requireCaller(headers)
+                .flatMapMany(caller -> doctorService
+                        .getDoctorList(caller, request.nameFilter, Mappers.fromRequest(request)))
                 .map(Mappers::toDto);
     }
 
     @GetMapping(ApiScheme.AccountService.Doctors.DoctorDetails)
-    public Mono<DoctorDto> details(@PathVariable("id") long id,
-                                   @RequestHeader HttpHeaders headers,
-                                   DoctorsFilterRequest request) {
-        var caller = UserHolder.requireCaller(headers);
-
-        return doctorService
-                .getDoctor(caller, id)
+    public Mono<AccountDto> details(@PathVariable("id") long id,
+                                    @RequestHeader HttpHeaders headers,
+                                    DoctorsFilterRequest request) {
+        return UserHolder
+                .requireCaller(headers)
+                .flatMap(caller -> doctorService
+                        .getDoctor(caller, id))
                 .map(Mappers::toDto);
     }
 }

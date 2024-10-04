@@ -1,14 +1,16 @@
 package com.simp.service.auth.server.controller;
 
 import com.simp.service.auth.domain.service.AccountServiceImpl;
-import com.simp.service.auth.domain.service.ExtendedTokenService;
+import com.simp.service.auth.domain.service.TokenServiceImpl;
+import com.simp.service.shared.data.contants.AuthConstants;
+import com.simp.service.shared.domain.exception.InvalidArgumentsException;
 import com.simp.service.shared.domain.service.AuthService;
-import com.simp.service.shared.domain.service.TokenService;
 import com.simp.service.shared.server.mapper.dto.Mappers;
 import com.simp.service.shared.server.payload.account.request.SignInRequest;
 import com.simp.service.shared.server.payload.account.request.SignUpRequest;
 import com.simp.service.shared.server.payload.account.response.AuthResponse;
 import com.simp.service.shared.server.payload.account.response.TokenValidateResponse;
+import com.simp.service.shared.server.payload.dto.AuthorizationDto;
 import com.simp.service.shared.server.payload.token.RefreshTokenRequest;
 import com.simp.service.shared.server.payload.token.ValidateTokenRequest;
 import com.simp.service.shared.server.scheme.ApiScheme;
@@ -23,16 +25,15 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
-    private final AccountServiceImpl accountService;
-    private final TokenService tokenService;
-    private final ExtendedTokenService extendedTokenService;
+    private final AccountServiceImpl accountService; // TODO
+    private final TokenServiceImpl tokenService; // TODO
 
     @PostMapping(ApiScheme.AccountService.Auth.SignUp)
     public Mono<AuthResponse> signUp(@RequestBody SignUpRequest request) {
         return authService
                 .signUp(request.lastName(), request.firstName(), request.username(), request.password())
                 .map(a -> new AuthResponse(
-                        extendedTokenService.generateToken(a),
+                        tokenService.generateToken(a),
                         Mappers.toDto(a)
                 ));
     }
@@ -42,7 +43,7 @@ public class AuthController {
         return authService
                 .signIn(request.username(), request.password())
                 .map(a -> new AuthResponse(
-                        extendedTokenService.generateToken(a),
+                        tokenService.generateToken(a),
                         Mappers.toDto(a)
                 ));
     }
@@ -50,7 +51,9 @@ public class AuthController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(ApiScheme.AccountService.Auth.SignOut)
     public Mono<Void> signOut(@RequestHeader HttpHeaders headers) {
-        return authService.signOut(UserHolder.requireCaller(headers));
+        return UserHolder
+                .requireCaller(headers)
+                .flatMap(authService::signOut);
     }
 
     @GetMapping(ApiScheme.AccountService.Auth.Validate)
@@ -62,16 +65,29 @@ public class AuthController {
 
     @PostMapping(ApiScheme.AccountService.Auth.Refresh)
     public Mono<AuthResponse> refresh(@RequestBody RefreshTokenRequest request) {
-        var accountId = extendedTokenService.getTokenUser(request.token());
+        return tokenService.getTokenData(request.token())
+                .flatMap((data) -> {
+                    if (data == null) {
+                        return Mono.error(new InvalidArgumentsException("Token invalid"));
+                    }
 
-        return accountService.getAccountUnsecured(accountId)
+                    return Mono.just(data);
+                })
+                .flatMap(accountService::getAccountUnsecured)
                 .map(account -> {
-                    var token = extendedTokenService.generateToken(account);
+                    var token = tokenService.generateToken(account);
 
                     return new AuthResponse(
                             token,
                             Mappers.toDto(account)
                     );
                 });
+    }
+
+    @PostMapping(ApiScheme.AccountService.Auth.Full)
+    public Mono<AuthorizationDto> getAuthData(@RequestHeader(AuthConstants.AUTH_HEADER) String token) {
+        return authService
+                .authUser(token)
+                .map(a -> new AuthorizationDto(Mappers.toDto(a.account()), a.roles()));
     }
 }

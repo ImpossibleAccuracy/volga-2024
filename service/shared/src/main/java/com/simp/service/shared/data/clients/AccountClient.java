@@ -1,12 +1,12 @@
 package com.simp.service.shared.data.clients;
 
-import com.simp.service.shared.data.contants.AuthContants;
+import com.simp.service.shared.data.contants.AuthConstants;
 import com.simp.service.shared.data.contants.Services;
 import com.simp.service.shared.server.payload.account.request.*;
 import com.simp.service.shared.server.payload.account.response.AuthResponse;
 import com.simp.service.shared.server.payload.account.response.TokenValidateResponse;
 import com.simp.service.shared.server.payload.dto.AccountDto;
-import com.simp.service.shared.server.payload.dto.DoctorDto;
+import com.simp.service.shared.server.payload.dto.AuthorizationDto;
 import com.simp.service.shared.server.payload.token.RefreshTokenRequest;
 import com.simp.service.shared.server.scheme.ApiScheme;
 import feign.Headers;
@@ -25,7 +25,7 @@ public interface AccountClient {
     Mono<AuthResponse> signIn(@RequestBody SignInRequest request);
 
     @PutMapping(ApiScheme.AccountService.Auth.SignOut)
-    Mono<Void> signOut(@RequestHeader(AuthContants.AUTH_HEADER) String token);
+    Mono<Void> signOut(@RequestHeader(AuthConstants.AUTH_HEADER) String token);
 
     @GetMapping(ApiScheme.AccountService.Auth.Validate)
     Mono<TokenValidateResponse> validateToken(@RequestParam("accessToken") String token);
@@ -34,47 +34,54 @@ public interface AccountClient {
     Mono<AuthResponse> refreshToken(@RequestBody RefreshTokenRequest request);
 
     @GetMapping(ApiScheme.AccountService.Account.Me)
-    Mono<AccountDto> getAccount(@RequestHeader(AuthContants.AUTH_HEADER) String token);
+    Mono<AccountDto> getAccount(@RequestHeader(AuthConstants.AUTH_HEADER) String token);
 
     @PutMapping(ApiScheme.AccountService.Account.Update)
     Mono<AccountDto> updateAccount(
-            @RequestHeader(AuthContants.AUTH_HEADER) String token,
+            @RequestHeader(AuthConstants.AUTH_HEADER) String token,
             @RequestBody AccountUpdateRequest request);
 
     // ADMIN SECTION
 
     @GetMapping(ApiScheme.AccountService.Account.Accounts)
     Flux<AccountDto> getAccountList(
-            @RequestHeader(AuthContants.AUTH_HEADER) String token,
+            @RequestHeader(AuthConstants.AUTH_HEADER) String token,
             @RequestParam("from") int from,
             @RequestParam("count") int count);
 
     @PostMapping(ApiScheme.AccountService.Account.Accounts)
     Mono<AccountDto> createAccount(
-            @RequestHeader(AuthContants.AUTH_HEADER) String token,
+            @RequestHeader(AuthConstants.AUTH_HEADER) String token,
             @RequestBody AccountCreateRequest request);
 
     @PutMapping(ApiScheme.AccountService.Account.AccountDetails)
     Mono<AccountDto> updateAccount(
-            @RequestHeader(AuthContants.AUTH_HEADER) String token,
+            @RequestHeader(AuthConstants.AUTH_HEADER) String token,
             @PathVariable("id") Long id,
             @RequestBody AccountUpdateFullRequest request);
 
     @DeleteMapping(ApiScheme.AccountService.Account.AccountDetails)
     Mono<Void> deleteAccount(
-            @RequestHeader(AuthContants.AUTH_HEADER) String token,
+            @RequestHeader(AuthConstants.AUTH_HEADER) String token,
             @PathVariable("id") Long id);
+
+    // TODO: need to additionally secure endpoint
+    @PostMapping(ApiScheme.AccountService.Auth.Full)
+    Mono<AuthorizationDto> getAccountAuthorization(
+            @RequestHeader(AuthConstants.AUTH_HEADER) String token
+    );
 
     // DOCTORS
 
     @GetMapping(ApiScheme.AccountService.Doctors.Doctors)
-    Flux<DoctorDto> getDoctorList(
-            @RequestHeader(AuthContants.AUTH_HEADER) String token,
+    Flux<AccountDto> getDoctorList(
+            @RequestHeader(AuthConstants.AUTH_HEADER) String token,
+            @RequestParam("nameFilter") String nameFilter,
             @RequestParam("from") int from,
             @RequestParam("count") int count);
 
     @GetMapping(ApiScheme.AccountService.Doctors.DoctorDetails)
-    Mono<DoctorDto> getDoctor(
-            @RequestHeader(AuthContants.AUTH_HEADER) String token,
+    Mono<AccountDto> getDoctor(
+            @RequestHeader(AuthConstants.AUTH_HEADER) String token,
             @PathVariable("id") Long id);
 }

@@ -3,6 +3,25 @@ x-discovery-client-vars: &discovery-props
   CONFIG_URL: http://config-server:${CONFIG_PORT}
 
 services:
+  # TODO: Add DB for each microservice
+  database:
+    image: postgres:13.3
+    restart: always
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/scripts:/docker-entrypoint-initdb.d
+      - ./database/data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
   config-server:
     build:
       dockerfile: server/config-server/Dockerfile
@@ -60,6 +79,8 @@ services:
       config-server:
         condition: service_healthy
       discovery-server:
+        condition: service_healthy
+      auth-service:
         condition: service_healthy
     build:
       dockerfile: service/hospital-service/Dockerfile
