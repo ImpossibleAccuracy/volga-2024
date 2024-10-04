@@ -58,5 +58,5 @@ public interface AccountRepository extends ReactiveCrudRepository<AccountEntity,
             set deleted = true
             where id = :id
             """)
-    Mono<Void> deleteAccountSoft(Long id);
+    Mono<Void> deleteSoft(Long id);
 }

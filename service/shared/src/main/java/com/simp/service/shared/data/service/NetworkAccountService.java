@@ -31,7 +31,7 @@ public class NetworkAccountService implements AccountService {
     }
 
     @Override
-    public Mono<? extends Account> getAccount(Caller caller, Long id) {
+    public Mono<? extends Account> getAccount(Caller caller, long id) {
         return accountClient.getAccount(caller.token());
     }
 

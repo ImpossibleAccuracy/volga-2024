@@ -14,6 +14,15 @@ spring:
     loadbalancer:
       ribbon:
         enabled: true
+  r2dbc:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: DEBUG # for queries
+    io.r2dbc.postgresql.PARAM: DEBUG # for parameters
 
 eureka:
   instance:

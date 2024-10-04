@@ -1,4 +1,6 @@
 package com.simp.service.shared.server.payload.hospital;
 
-public class HospitalCreateUpdateRequest {
+import java.util.List;
+
+public record HospitalCreateUpdateRequest(String name, String address, String contactPhone, List<String> rooms) {
 }

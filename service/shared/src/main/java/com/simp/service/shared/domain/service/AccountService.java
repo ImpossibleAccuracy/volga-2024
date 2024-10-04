@@ -17,7 +17,7 @@ public interface AccountService {
             String password,
             List<String> roles);
 
-    Mono<? extends Account> getAccount(Caller caller, Long id);
+    Mono<? extends Account> getAccount(Caller caller, long id);
 
     Flux<? extends Account> getAccountList(Caller caller, Pagination pagination);
 

@@ -4,7 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import reactivefeign.spring.config.EnableReactiveFeignClients;
 
@@ -12,7 +11,6 @@ import reactivefeign.spring.config.EnableReactiveFeignClients;
 @SpringBootApplication(scanBasePackages = {"com.simp"})
 @ConfigurationPropertiesScan("com.simp")
 @EnableWebFlux
-@EnableR2dbcAuditing
 @EnableReactiveFeignClients(basePackages = {"com.simp"})
 public class AuthServiceApplication {
     public static void main(String[] args) {

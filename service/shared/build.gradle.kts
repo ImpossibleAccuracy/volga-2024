@@ -20,6 +20,10 @@ dependencies {
     api(libs.reactivefeign.cloud)
     api(libs.reactivefeign.configuration)
 
+    // DATABASE
+    implementation(libs.spring.r2dbc)
+//    implementation(libs.spring.jdbc)
+
     // LOMBOK
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)

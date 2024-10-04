@@ -1,6 +1,7 @@
 x-discovery-client-vars: &discovery-props
   DISCOVERY_HOST: discovery-server
   CONFIG_URL: http://config-server:${CONFIG_PORT}
+  DATABASE_URL: r2dbc:postgresql://database:5432/${DATABASE_NAME}
 
 services:
   # TODO: Add DB for each microservice

@@ -21,9 +21,9 @@ spring:
       ribbon:
         enabled: true
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/stage
-    username: user
-    password: password
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
 
 eureka:
   instance:

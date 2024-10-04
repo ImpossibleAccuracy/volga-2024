@@ -24,8 +24,9 @@ public class NetworkAuthService implements AuthService {
     public Mono<? extends Account> signUp(String lastName, String firstName, String username, String password) {
         SignUpRequest request = new SignUpRequest(lastName, firstName, username, password);
 
-        return accountClient.signUp(request)
-                .map(AuthResponse::account); // TODO
+        return accountClient
+                .signUp(request)
+                .map(AuthResponse::account);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class NetworkAuthService implements AuthService {
 
         return accountClient
                 .signIn(request)
-                .map(AuthResponse::account); // TODO
+                .map(AuthResponse::account);
     }
 
     @Override

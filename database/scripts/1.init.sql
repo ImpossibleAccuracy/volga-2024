@@ -22,9 +22,9 @@ CREATE TABLE "Hospital" (
   "id" SERIAL PRIMARY KEY,
   "created_at" timestamp NOT NULL,
   "creator_id" int NOT NULL,
-  "name" varchar UNIQUE NOT NULL,
-  "address" varchar UNIQUE NOT NULL,
-  "contactPhone" varchar UNIQUE NOT NULL,
+  "name" varchar NOT NULL,
+  "address" varchar NOT NULL,
+  "contact_phone" varchar NOT NULL,
   "deleted" boolean NOT NULL
 );
 
@@ -58,9 +58,9 @@ CREATE TABLE "History" (
   "created_at" timestamp NOT NULL,
   "creator_id" int NOT NULL,
   "date" timestamp NOT NULL,
-  "pacientId" int NOT NULL,
-  "hospitalId" int NOT NULL,
-  "doctorId" int NOT NULL,
+  "patient_id" int NOT NULL,
+  "hospital_id" int NOT NULL,
+  "doctor_id" int NOT NULL,
   "room" varchar NOT NULL,
   "data" text NOT NULL
 );
@@ -87,8 +87,8 @@ ALTER TABLE "Appointments" ADD FOREIGN KEY ("timetable_id") REFERENCES "Timetabl
 
 ALTER TABLE "History" ADD FOREIGN KEY ("creator_id") REFERENCES "Account" ("id");
 
-ALTER TABLE "History" ADD FOREIGN KEY ("pacientId") REFERENCES "Account" ("id");
+ALTER TABLE "History" ADD FOREIGN KEY ("patient_id") REFERENCES "Account" ("id");
 
-ALTER TABLE "History" ADD FOREIGN KEY ("hospitalId") REFERENCES "Hospital" ("id");
+ALTER TABLE "History" ADD FOREIGN KEY ("hospital_id") REFERENCES "Hospital" ("id");
 
-ALTER TABLE "History" ADD FOREIGN KEY ("doctorId") REFERENCES "Account" ("id");
+ALTER TABLE "History" ADD FOREIGN KEY ("doctor_id") REFERENCES "Account" ("id");

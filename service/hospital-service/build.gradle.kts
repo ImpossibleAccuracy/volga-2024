@@ -18,6 +18,13 @@ dependencies {
     implementation(libs.bundles.spring.cloud.client)
     implementation(libs.gson)
 
+    // DATABASE
+    implementation(libs.spring.r2dbc)
+    implementation(libs.spring.jdbc)
+    implementation(libs.r2dbc)
+    implementation(libs.r2dbc.postgresql)
+    implementation(libs.postgresql)
+
     // LOMBOK
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)

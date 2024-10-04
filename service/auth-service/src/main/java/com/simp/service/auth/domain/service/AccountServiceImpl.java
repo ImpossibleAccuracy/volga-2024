@@ -36,14 +36,14 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.save(account);
     }
 
-    public Mono<? extends Account> getAccountUnsecured(Long id) {
+    public Mono<? extends Account> getAccountUnsecured(long id) {
         return accountRepository
                 .findByIdAndDeletedFalse(id)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Account not found")));
     }
 
     @Override
-    public Mono<? extends Account> getAccount(Caller caller, Long id) {
+    public Mono<? extends Account> getAccount(Caller caller, long id) {
         // TODO: check access
         return getAccountUnsecured(id);
     }
@@ -92,6 +92,6 @@ public class AccountServiceImpl implements AccountService {
     public Mono<Void> deleteAccount(Caller caller, Account target) {
         // TODO: check access
 
-        return accountRepository.deleteAccountSoft(target.id());
+        return accountRepository.deleteSoft(target.id());
     }
 }
