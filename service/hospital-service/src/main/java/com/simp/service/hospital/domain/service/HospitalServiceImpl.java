@@ -21,11 +21,11 @@ public class HospitalServiceImpl implements HospitalService {
     private final RoomServiceImpl roomService;
 
     @Override
-    public Mono<? extends Hospital> newHospital(Caller caller,
-                                                String name,
-                                                String address,
-                                                String contactPhone,
-                                                List<String> rooms) {
+    public Mono<? extends Hospital> create(Caller caller,
+                                           String name,
+                                           String address,
+                                           String contactPhone,
+                                           List<String> rooms) {
         // TODO: check
 
         return Mono.just(HospitalEntity.builder()
@@ -40,7 +40,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public Mono<? extends Hospital> getHospital(Caller caller, long id) {
+    public Mono<? extends Hospital> get(Caller caller, long id) {
         // TODO: check
 
         return hospitalRepository
@@ -49,19 +49,19 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public Flux<? extends Hospital> getHospitalList(Caller caller, Pagination pagination) {
+    public Flux<? extends Hospital> getList(Caller caller, Pagination<Integer> pagination) {
         // TODO: check
 
         return hospitalRepository.findAllPaginated(pagination.from(), pagination.count());
     }
 
     @Override
-    public Mono<? extends Hospital> updateHospital(Caller caller,
-                                                   Hospital source,
-                                                   String name,
-                                                   String address,
-                                                   String contactPhone,
-                                                   List<String> rooms) {
+    public Mono<? extends Hospital> update(Caller caller,
+                                           Hospital source,
+                                           String name,
+                                           String address,
+                                           String contactPhone,
+                                           List<String> rooms) {
         // TODO: check
 
         var sourceEntity = source instanceof HospitalEntity ? Mono.just((HospitalEntity) source) : hospitalRepository.findById(source.id());
@@ -83,7 +83,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public Mono<Void> deleteHospital(Caller caller, Hospital hospital) {
+    public Mono<Void> delete(Caller caller, Hospital hospital) {
         // TODO: check
 
         return hospitalRepository.deleteSoft(hospital.id());

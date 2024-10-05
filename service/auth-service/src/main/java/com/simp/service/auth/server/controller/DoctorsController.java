@@ -26,7 +26,7 @@ public class DoctorsController {
         return UserHolder
                 .requireCaller(headers)
                 .flatMapMany(caller -> doctorService
-                        .getDoctorList(caller, request.nameFilter, Mappers.fromRequest(request)))
+                        .getList(caller, request.nameFilter, Mappers.fromRequest(request)))
                 .map(Mappers::toDto);
     }
 
@@ -37,7 +37,7 @@ public class DoctorsController {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> doctorService
-                        .getDoctor(caller, id))
+                        .get(caller, id))
                 .map(Mappers::toDto);
     }
 }

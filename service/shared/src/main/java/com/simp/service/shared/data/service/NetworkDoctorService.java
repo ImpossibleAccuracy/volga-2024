@@ -19,12 +19,12 @@ public class NetworkDoctorService implements DoctorService {
     private final AccountClient accountClient;
 
     @Override
-    public Mono<? extends Account> getDoctor(Caller caller, Long id) {
+    public Mono<? extends Account> get(Caller caller, Long id) {
         return accountClient.getDoctor(caller.token(), id);
     }
 
     @Override
-    public Flux<? extends Account> getDoctorList(Caller caller, String nameFilter, Pagination pagination) {
+    public Flux<? extends Account> getList(Caller caller, String nameFilter, Pagination<Integer> pagination) {
         return accountClient.getDoctorList(caller.token(), nameFilter, pagination.from(), pagination.count());
     }
 }

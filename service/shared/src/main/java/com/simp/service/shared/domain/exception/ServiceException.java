@@ -1,5 +1,6 @@
 package com.simp.service.shared.domain.exception;
 
+// TODO: add exception handler
 public class ServiceException extends RuntimeException {
     public final int status;
 

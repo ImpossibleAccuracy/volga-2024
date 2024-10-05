@@ -29,7 +29,7 @@ public class AccountController {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> accountService
-                        .updateAccount(caller, request.firstName(), request.lastName(), request.password()))
+                        .update(caller, request.firstName(), request.lastName(), request.password()))
                 .map(Mappers::toDto);
     }
 }

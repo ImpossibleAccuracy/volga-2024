@@ -1,6 +1,6 @@
 package com.simp.service.shared.server.payload.shared;
 
-import java.util.Date;
+import java.time.Instant;
 
-public record DatePaginationRequest(Date from, Date to) {
+public record DatePaginationRequest(Instant from, Instant to) {
 }

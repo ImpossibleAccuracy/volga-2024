@@ -9,18 +9,18 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 public interface HospitalService {
-    Mono<? extends Hospital> newHospital(
+    Mono<? extends Hospital> create(
             Caller caller,
             String name,
             String address,
             String contactPhone,
             List<String> rooms);
 
-    Mono<? extends Hospital> getHospital(Caller caller, long id);
+    Mono<? extends Hospital> get(Caller caller, long id);
 
-    Flux<? extends Hospital> getHospitalList(Caller caller, Pagination pagination);
+    Flux<? extends Hospital> getList(Caller caller, Pagination<Integer> pagination);
 
-    Mono<? extends Hospital> updateHospital(
+    Mono<? extends Hospital> update(
             Caller caller,
             Hospital source,
             String name,
@@ -28,5 +28,5 @@ public interface HospitalService {
             String contactPhone,
             List<String> rooms);
 
-    Mono<Void> deleteHospital(Caller caller, Hospital hospital);
+    Mono<Void> delete(Caller caller, Hospital hospital);
 }

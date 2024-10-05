@@ -7,7 +7,10 @@ import com.simp.service.shared.domain.model.Room;
 import com.simp.service.shared.server.payload.dto.AccountDto;
 import com.simp.service.shared.server.payload.dto.HospitalDto;
 import com.simp.service.shared.server.payload.dto.RoomDto;
+import com.simp.service.shared.server.payload.shared.DatePaginationRequest;
 import com.simp.service.shared.server.payload.shared.PaginationRequest;
+
+import java.time.Instant;
 
 public final class Mappers {
     public static AccountDto toDto(Account item) {
@@ -28,7 +31,11 @@ public final class Mappers {
         return new RoomDto(item.id(), item.name(), item.hospital());
     }
 
-    public static Pagination fromRequest(PaginationRequest request) {
-        return new Pagination(request.getFrom(), request.getCount());
+    public static Pagination<Integer> fromRequest(PaginationRequest request) {
+        return new Pagination<>(request.getFrom(), request.getCount());
+    }
+
+    public static Pagination<Instant> fromRequest(DatePaginationRequest request) {
+        return new Pagination<>(request.from(), request.to());
     }
 }

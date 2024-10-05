@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 public interface AccountService {
-    Mono<? extends Account> newAccount(
+    Mono<? extends Account> create(
             Caller caller,
             String firstName,
             String lastName,
@@ -17,17 +17,17 @@ public interface AccountService {
             String password,
             List<String> roles);
 
-    Mono<? extends Account> getAccount(Caller caller, long id);
+    Mono<? extends Account> get(Caller caller, long id);
 
-    Flux<? extends Account> getAccountList(Caller caller, Pagination pagination);
+    Flux<? extends Account> getList(Caller caller, Pagination<Integer> pagination);
 
-    Mono<? extends Account> updateAccount(
+    Mono<? extends Account> update(
             Caller caller,
             String lastName,
             String firstName,
             String password);
 
-    Mono<? extends Account> updateAccount(
+    Mono<? extends Account> update(
             Caller caller,
             Account target,
             String username,
@@ -36,5 +36,5 @@ public interface AccountService {
             String password,
             List<String> roles);
 
-    Mono<Void> deleteAccount(Caller caller, Account target);
+    Mono<Void> delete(Caller caller, Account target);
 }

@@ -24,38 +24,38 @@ public class NetworkAccountService implements AccountService {
     private final AccountClient accountClient;
 
     @Override
-    public Mono<? extends Account> newAccount(Caller caller, String firstName, String lastName, String username, String password, List<String> roles) {
+    public Mono<? extends Account> create(Caller caller, String firstName, String lastName, String username, String password, List<String> roles) {
         AccountCreateRequest request = new AccountCreateRequest(lastName, firstName, username, password, roles);
 
         return accountClient.createAccount(caller.token(), request);
     }
 
     @Override
-    public Mono<? extends Account> getAccount(Caller caller, long id) {
+    public Mono<? extends Account> get(Caller caller, long id) {
         return accountClient.getAccount(caller.token());
     }
 
     @Override
-    public Flux<? extends Account> getAccountList(Caller caller, Pagination pagination) {
+    public Flux<? extends Account> getList(Caller caller, Pagination<Integer> pagination) {
         return accountClient.getAccountList(caller.token(), pagination.from(), pagination.count());
     }
 
     @Override
-    public Mono<? extends Account> updateAccount(Caller caller, String lastName, String firstName, String password) {
+    public Mono<? extends Account> update(Caller caller, String lastName, String firstName, String password) {
         AccountUpdateRequest request = new AccountUpdateRequest(lastName, firstName, password);
 
         return accountClient.updateAccount(caller.token(), request);
     }
 
     @Override
-    public Mono<? extends Account> updateAccount(Caller caller, Account target, String username, String lastName, String firstName, String password, List<String> roles) {
+    public Mono<? extends Account> update(Caller caller, Account target, String username, String lastName, String firstName, String password, List<String> roles) {
         AccountUpdateFullRequest request = new AccountUpdateFullRequest(lastName, firstName, username, password, roles);
 
         return accountClient.updateAccount(caller.token(), target.id(), request);
     }
 
     @Override
-    public Mono<Void> deleteAccount(Caller caller, Account target) {
+    public Mono<Void> delete(Caller caller, Account target) {
         return accountClient.deleteAccount(caller.token(), target.id());
     }
 }

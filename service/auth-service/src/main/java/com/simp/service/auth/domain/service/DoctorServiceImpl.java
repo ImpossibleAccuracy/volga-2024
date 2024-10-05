@@ -18,14 +18,14 @@ public class DoctorServiceImpl implements DoctorService {
     private final AccountRepository accountRepository;
 
     @Override
-    public Mono<? extends Account> getDoctor(Caller caller, Long id) {
+    public Mono<? extends Account> get(Caller caller, Long id) {
         return accountRepository
                 .findByIdAndRole(id, Roles.DOCTOR.dbName())
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Doctor not found")));
     }
 
     @Override
-    public Flux<? extends Account> getDoctorList(Caller caller, String nameFilter, Pagination pagination) {
+    public Flux<? extends Account> getList(Caller caller, String nameFilter, Pagination<Integer> pagination) {
         if (nameFilter == null || nameFilter.isBlank()) {
             return accountRepository.findAllByNameLikeAndRoleExistsPaginated(
                     Roles.DOCTOR.dbName(),

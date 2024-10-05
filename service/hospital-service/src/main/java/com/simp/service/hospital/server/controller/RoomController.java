@@ -27,7 +27,7 @@ public class RoomController {
                                      PaginationRequest pagination) {
         return UserHolder
                 .requireCaller(headers)
-                .zipWhen(caller -> hospitalService.getHospital(caller, id))
+                .zipWhen(caller -> hospitalService.get(caller, id))
                 .flatMapMany(tuple -> roomService.getHospitalRooms(tuple.getT1(), tuple.getT2()))
                 .map(Mappers::toDto);
     }

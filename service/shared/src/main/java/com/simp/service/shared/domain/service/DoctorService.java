@@ -7,7 +7,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface DoctorService {
-    Mono<? extends Account> getDoctor(Caller caller, Long id);
+    Mono<? extends Account> get(Caller caller, Long id);
 
-    Flux<? extends Account> getDoctorList(Caller caller, String nameFilter, Pagination pagination);
+    Flux<? extends Account> getList(Caller caller, String nameFilter, Pagination<Integer> pagination);
 }

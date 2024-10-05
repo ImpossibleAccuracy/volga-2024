@@ -25,7 +25,7 @@ public class HospitalController {
                                          @RequestBody HospitalCreateUpdateRequest request) {
         return UserHolder
                 .requireCaller(headers)
-                .flatMap(caller -> hospitalService.newHospital(
+                .flatMap(caller -> hospitalService.create(
                         caller,
                         request.name(),
                         request.address(),
@@ -40,7 +40,7 @@ public class HospitalController {
                                     PaginationRequest pagination) {
         return UserHolder
                 .requireCaller(headers)
-                .flatMapMany(caller -> hospitalService.getHospitalList(caller, Mappers.fromRequest(pagination)))
+                .flatMapMany(caller -> hospitalService.getList(caller, Mappers.fromRequest(pagination)))
                 .map(Mappers::toDto);
     }
 
@@ -49,7 +49,7 @@ public class HospitalController {
                                        @PathVariable("id") long id) {
         return UserHolder
                 .requireCaller(headers)
-                .flatMap(caller -> hospitalService.getHospital(caller, id))
+                .flatMap(caller -> hospitalService.get(caller, id))
                 .map(Mappers::toDto);
     }
 
@@ -60,8 +60,8 @@ public class HospitalController {
                                     @RequestBody HospitalCreateUpdateRequest request) {
         return UserHolder
                 .requireCaller(headers)
-                .zipWhen(caller -> hospitalService.getHospital(caller, id))
-                .flatMap(tuple -> hospitalService.updateHospital(
+                .zipWhen(caller -> hospitalService.get(caller, id))
+                .flatMap(tuple -> hospitalService.update(
                         tuple.getT1(),
                         tuple.getT2(),
                         request.name(),
@@ -79,7 +79,7 @@ public class HospitalController {
                              @PathVariable("id") long id) {
         return UserHolder
                 .requireCaller(headers)
-                .zipWhen(caller -> hospitalService.getHospital(caller, id))
-                .flatMap(tuple -> hospitalService.deleteHospital(tuple.getT1(), tuple.getT2()));
+                .zipWhen(caller -> hospitalService.get(caller, id))
+                .flatMap(tuple -> hospitalService.delete(tuple.getT1(), tuple.getT2()));
     }
 }

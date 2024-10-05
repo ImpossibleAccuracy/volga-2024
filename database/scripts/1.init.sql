@@ -42,7 +42,8 @@ CREATE TABLE "Timetable" (
   "doctor_id" int NOT NULL,
   "from" timestamp NOT NULL,
   "to" timestamp NOT NULL,
-  "room_id" int NOT NULL
+  "room_id" int NOT NULL,
+  "deleted" boolean NOT NULL
 );
 
 CREATE TABLE "Appointments" (
@@ -50,7 +51,8 @@ CREATE TABLE "Appointments" (
   "created_at" timestamp NOT NULL,
   "creator_id" int NOT NULL,
   "timetable_id" int NOT NULL,
-  "time" timestamp NOT NULL
+  "time" timestamp NOT NULL,
+  "deleted" boolean NOT NULL
 );
 
 CREATE TABLE "History" (

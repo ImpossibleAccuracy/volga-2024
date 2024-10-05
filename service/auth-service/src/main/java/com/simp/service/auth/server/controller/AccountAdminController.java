@@ -26,7 +26,7 @@ public class AccountAdminController {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> accountService
-                        .newAccount(
+                        .create(
                                 caller,
                                 request.firstName(),
                                 request.lastName(),
@@ -43,7 +43,7 @@ public class AccountAdminController {
         return UserHolder
                 .requireCaller(headers)
                 .flatMapMany(caller -> accountService
-                        .getAccountList(caller, Mappers.fromRequest(request)))
+                        .getList(caller, Mappers.fromRequest(request)))
                 .map(Mappers::toDto);
     }
 
@@ -55,8 +55,8 @@ public class AccountAdminController {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> accountService
-                        .getAccount(caller, id)
-                        .flatMap(target -> accountService.updateAccount(
+                        .get(caller, id)
+                        .flatMap(target -> accountService.update(
                                 caller,
                                 target,
                                 request.firstName(),
@@ -76,7 +76,7 @@ public class AccountAdminController {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> accountService
-                        .getAccount(caller, id)
-                        .flatMap(target -> accountService.deleteAccount(caller, target)));
+                        .get(caller, id)
+                        .flatMap(target -> accountService.delete(caller, target)));
     }
 }

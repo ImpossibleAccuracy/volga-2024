@@ -22,7 +22,7 @@ public class AccountServiceImpl implements AccountService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Mono<? extends Account> newAccount(Caller caller, String firstName, String lastName, String username, String password, List<String> roles) {
+    public Mono<? extends Account> create(Caller caller, String firstName, String lastName, String username, String password, List<String> roles) {
         // TODO: check admin
 
         AccountEntity account = AccountEntity.builder()
@@ -43,18 +43,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Mono<? extends Account> getAccount(Caller caller, long id) {
+    public Mono<? extends Account> get(Caller caller, long id) {
         // TODO: check access
         return getAccountUnsecured(id);
     }
 
     @Override
-    public Flux<? extends Account> getAccountList(Caller caller, Pagination pagination) {
+    public Flux<? extends Account> getList(Caller caller, Pagination<Integer> pagination) {
         return accountRepository.findAllPaginated(pagination.from(), pagination.count());
     }
 
     @Override
-    public Mono<? extends Account> updateAccount(Caller caller, String lastName, String firstName, String password) {
+    public Mono<? extends Account> update(Caller caller, String lastName, String firstName, String password) {
         AccountEntity update = AccountEntity.builder()
                 .id(caller.account().id())
                 .username(caller.account().username())
@@ -67,13 +67,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Mono<? extends Account> updateAccount(Caller caller,
-                                                 Account target,
-                                                 String username,
-                                                 String lastName,
-                                                 String firstName,
-                                                 String password,
-                                                 List<String> roles) {
+    public Mono<? extends Account> update(Caller caller,
+                                          Account target,
+                                          String username,
+                                          String lastName,
+                                          String firstName,
+                                          String password,
+                                          List<String> roles) {
         // TODO: check access
 
         AccountEntity update = AccountEntity.builder()
@@ -89,7 +89,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Mono<Void> deleteAccount(Caller caller, Account target) {
+    public Mono<Void> delete(Caller caller, Account target) {
         // TODO: check access
 
         return accountRepository.deleteSoft(target.id());
