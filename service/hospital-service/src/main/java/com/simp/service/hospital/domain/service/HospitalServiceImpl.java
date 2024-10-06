@@ -57,16 +57,16 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public Mono<? extends Hospital> update(Caller caller,
-                                           Hospital source,
+                                           Hospital target,
                                            String name,
                                            String address,
                                            String contactPhone,
                                            List<String> rooms) {
         // TODO: check
 
-        var sourceEntity = source instanceof HospitalEntity ? Mono.just((HospitalEntity) source) : hospitalRepository.findById(source.id());
+        var targetEntity = target instanceof HospitalEntity ? Mono.just((HospitalEntity) target) : hospitalRepository.findById(target.id());
 
-        return sourceEntity
+        return targetEntity
                 .map(s -> HospitalEntity.builder()
                         .id(s.id())
                         .createdAt(s.createdAt())

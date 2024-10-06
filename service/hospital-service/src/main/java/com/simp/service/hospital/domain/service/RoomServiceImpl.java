@@ -2,6 +2,7 @@ package com.simp.service.hospital.domain.service;
 
 import com.simp.service.hospital.data.model.RoomEntity;
 import com.simp.service.hospital.data.repository.RoomRepository;
+import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Hospital;
 import com.simp.service.shared.domain.model.Room;
@@ -48,6 +49,20 @@ public class RoomServiceImpl implements RoomService {
                             .zipWhen(a -> roomRepository.deleteAll(deletedRooms))
                             .then();
                 });
+    }
+
+    @Override
+    public Mono<? extends Room> get(Caller caller, Hospital hospital, long id) {
+        return roomRepository
+                .findByIdAndHospital(id, hospital.id())
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Room not found")));
+    }
+
+    @Override
+    public Mono<? extends Room> getByName(Caller caller, Hospital hospital, String name) {
+        return roomRepository
+                .findByNameAndHospital(name, hospital.id())
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Room not found")));
     }
 
     @Override

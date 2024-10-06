@@ -1,7 +1,7 @@
 package com.simp.service.hospital.server.controller;
 
 import com.simp.service.shared.domain.service.HospitalService;
-import com.simp.service.shared.server.mapper.dto.Mappers;
+import com.simp.service.shared.server.mapper.Mappers;
 import com.simp.service.shared.server.payload.dto.HospitalDto;
 import com.simp.service.shared.server.payload.hospital.HospitalCreateUpdateRequest;
 import com.simp.service.shared.server.payload.shared.PaginationRequest;

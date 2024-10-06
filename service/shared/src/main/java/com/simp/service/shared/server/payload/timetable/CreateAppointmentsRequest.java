@@ -1,6 +1,6 @@
 package com.simp.service.shared.server.payload.timetable;
 
-import java.util.Date;
+import java.time.Instant;
 
-public record CreateAppointmentsRequest(Date time) {
+public record CreateAppointmentsRequest(Instant time) {
 }

@@ -1,30 +1,21 @@
 package com.simp.service.hospital.data.model;
 
+import com.simp.service.shared.data.model.BaseAuditEntity;
 import com.simp.service.shared.domain.model.Hospital;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.Instant;
-
 @Table(name = "\"Hospital\"")
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Accessors(fluent = true, chain = true)
-public class HospitalEntity implements Hospital {
-    @Id
-    @Column("id")
-    private long id;
-
+public class HospitalEntity extends BaseAuditEntity implements Hospital {
     @Column("name")
     private String name;
 
@@ -37,12 +28,4 @@ public class HospitalEntity implements Hospital {
     @Column("deleted")
     @Builder.Default
     private boolean deleted = false;
-
-    @Column("created_at")
-    @CreatedDate
-    private Instant createdAt;
-
-    @Column("creator_id")
-    @CreatedBy
-    private long creator;
 }

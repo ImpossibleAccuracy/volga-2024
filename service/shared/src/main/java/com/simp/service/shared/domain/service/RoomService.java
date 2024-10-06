@@ -9,5 +9,7 @@ import reactor.core.publisher.Mono;
 public interface RoomService {
     Mono<? extends Room> get(Caller caller, Hospital hospital, long id);
 
+    Mono<? extends Room> getByName(Caller caller, Hospital hospital, String name);
+
     Flux<? extends Room> getHospitalRooms(Caller caller, Hospital hospital);
 }

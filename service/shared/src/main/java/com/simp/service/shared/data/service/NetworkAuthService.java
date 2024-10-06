@@ -1,7 +1,7 @@
 package com.simp.service.shared.data.service;
 
-import com.simp.service.shared.data.clients.AccountClient;
 import com.simp.service.shared.contants.Services;
+import com.simp.service.shared.data.clients.AuthClient;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Authorization;
 import com.simp.service.shared.domain.model.Caller;
@@ -18,13 +18,13 @@ import reactor.core.publisher.Mono;
 @ConditionalOnExpression("${" + Services.Account.Key + ":true}")
 @RequiredArgsConstructor
 public class NetworkAuthService implements AuthService {
-    private final AccountClient accountClient;
+    private final AuthClient authClient;
 
     @Override
     public Mono<? extends Account> signUp(String lastName, String firstName, String username, String password) {
         SignUpRequest request = new SignUpRequest(lastName, firstName, username, password);
 
-        return accountClient
+        return authClient
                 .signUp(request)
                 .map(AuthResponse::account);
     }
@@ -33,18 +33,18 @@ public class NetworkAuthService implements AuthService {
     public Mono<? extends Account> signIn(String username, String password) {
         SignInRequest request = new SignInRequest(username, password);
 
-        return accountClient
+        return authClient
                 .signIn(request)
                 .map(AuthResponse::account);
     }
 
     @Override
     public Mono<Void> signOut(Caller account) {
-        return accountClient.signOut(account.token());
+        return authClient.signOut(account.token());
     }
 
     @Override
     public Mono<? extends Authorization> authUser(String token) {
-        return accountClient.getAccountAuthorization(token);
+        return authClient.getAccountAuthorization(token);
     }
 }

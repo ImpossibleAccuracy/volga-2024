@@ -1,0 +1,33 @@
+management:
+  server:
+    port: ${HEALTHCHECK_PORT}
+
+server:
+  port: ${TIMETABLE_SERVICE_PORT}
+
+app:
+  services:
+    timetable: false
+
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: true
+  r2dbc:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: DEBUG
+    io.r2dbc.postgresql.PARAM: DEBUG
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_USER}:${DISCOVERY_PASSWORD}@${DISCOVERY_HOST}:${DISCOVERY_PORT}/eureka/

@@ -5,7 +5,7 @@ import com.simp.service.auth.domain.service.TokenServiceImpl;
 import com.simp.service.shared.contants.AuthConstants;
 import com.simp.service.shared.domain.exception.InvalidArgumentsException;
 import com.simp.service.shared.domain.service.AuthService;
-import com.simp.service.shared.server.mapper.dto.Mappers;
+import com.simp.service.shared.server.mapper.Mappers;
 import com.simp.service.shared.server.payload.account.request.SignInRequest;
 import com.simp.service.shared.server.payload.account.request.SignUpRequest;
 import com.simp.service.shared.server.payload.account.response.AuthResponse;

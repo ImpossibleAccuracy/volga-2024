@@ -1,12 +1,7 @@
-package com.simp.service.shared.server.mapper.dto;
+package com.simp.service.shared.server.mapper;
 
-import com.simp.service.shared.domain.model.Account;
-import com.simp.service.shared.domain.model.Hospital;
-import com.simp.service.shared.domain.model.Pagination;
-import com.simp.service.shared.domain.model.Room;
-import com.simp.service.shared.server.payload.dto.AccountDto;
-import com.simp.service.shared.server.payload.dto.HospitalDto;
-import com.simp.service.shared.server.payload.dto.RoomDto;
+import com.simp.service.shared.domain.model.*;
+import com.simp.service.shared.server.payload.dto.*;
 import com.simp.service.shared.server.payload.shared.DatePaginationRequest;
 import com.simp.service.shared.server.payload.shared.PaginationRequest;
 
@@ -29,6 +24,18 @@ public final class Mappers {
         if (item instanceof RoomDto) return (RoomDto) item;
 
         return new RoomDto(item.id(), item.name(), item.hospital());
+    }
+
+    public static TimetableDto toDto(Timetable item) {
+        if (item instanceof TimetableDto) return (TimetableDto) item;
+
+        return new TimetableDto(item.id(), item.hospital(), item.doctor(), item.from(), item.to(), item.room());
+    }
+
+    public static AppointmentDto toDto(Appointment item) {
+        if (item instanceof AppointmentDto) return (AppointmentDto) item;
+
+        return new AppointmentDto(item.id(), item.creator(), item.timetable(), item.time());
     }
 
     public static Pagination<Integer> fromRequest(PaginationRequest request) {

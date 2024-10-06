@@ -1,7 +1,7 @@
 package com.simp.service.shared.data.service;
 
-import com.simp.service.shared.data.clients.AccountClient;
 import com.simp.service.shared.contants.Services;
+import com.simp.service.shared.data.clients.DoctorClient;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Pagination;
@@ -16,15 +16,15 @@ import reactor.core.publisher.Mono;
 @ConditionalOnExpression("${" + Services.Account.Key + ":true}")
 @RequiredArgsConstructor
 public class NetworkDoctorService implements DoctorService {
-    private final AccountClient accountClient;
+    private final DoctorClient doctorClient;
 
     @Override
     public Mono<? extends Account> get(Caller caller, Long id) {
-        return accountClient.getDoctor(caller.token(), id);
+        return doctorClient.getDoctor(caller.token(), id);
     }
 
     @Override
     public Flux<? extends Account> getList(Caller caller, String nameFilter, Pagination<Integer> pagination) {
-        return accountClient.getDoctorList(caller.token(), nameFilter, pagination.from(), pagination.count());
+        return doctorClient.getDoctorList(caller.token(), nameFilter, pagination.from(), pagination.count());
     }
 }

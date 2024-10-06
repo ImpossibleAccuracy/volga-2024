@@ -2,7 +2,7 @@ package com.simp.service.hospital.server.controller;
 
 import com.simp.service.shared.domain.service.HospitalService;
 import com.simp.service.shared.domain.service.RoomService;
-import com.simp.service.shared.server.mapper.dto.Mappers;
+import com.simp.service.shared.server.mapper.Mappers;
 import com.simp.service.shared.server.payload.dto.RoomDto;
 import com.simp.service.shared.server.payload.shared.PaginationRequest;
 import com.simp.service.shared.server.scheme.ApiScheme;

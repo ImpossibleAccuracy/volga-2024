@@ -1,26 +1,21 @@
 package com.simp.service.auth.data.model;
 
+import com.simp.service.shared.data.model.BaseEntity;
 import com.simp.service.shared.domain.model.Account;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.Id;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "\"Account\"")
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Accessors(fluent = true, chain = true)
-public class AccountEntity implements Account {
-    @Id
-    @Column("id")
-    private long id;
-
+public class AccountEntity extends BaseEntity implements Account {
     @Column("username")
     private String username;
 

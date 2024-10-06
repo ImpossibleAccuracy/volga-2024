@@ -13,4 +13,9 @@ public final class Services {
         public static final String Name = "hospital-service";
         public static final String Key = "app.services.hospital";
     }
+
+    public static final class Timetable {
+        public static final String Name = "timetable-service";
+        public static final String Key = "app.services.timetable";
+    }
 }

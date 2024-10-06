@@ -37,6 +37,7 @@ public final class ApiScheme {
         public static final String TimetableHospital = "/api/Timetable/Hospital/{id}";
         public static final String TimetableHospitalRoom = "/api/Timetable/Hospital/{id}/Room/{room}";
         public static final String TimetableAppointments = "/api/Timetable/{id}/Appointments";
+        public static final String Appointment = "/api/Appointment/{id}";
     }
 
     public static final class HistoryService {

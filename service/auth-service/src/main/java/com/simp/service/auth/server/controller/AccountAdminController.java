@@ -1,7 +1,7 @@
 package com.simp.service.auth.server.controller;
 
 import com.simp.service.shared.domain.service.AccountService;
-import com.simp.service.shared.server.mapper.dto.Mappers;
+import com.simp.service.shared.server.mapper.Mappers;
 import com.simp.service.shared.server.payload.account.request.AccountCreateRequest;
 import com.simp.service.shared.server.payload.dto.AccountDto;
 import com.simp.service.shared.server.payload.shared.PaginationRequest;

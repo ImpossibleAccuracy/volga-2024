@@ -22,7 +22,7 @@ public interface HospitalService {
 
     Mono<? extends Hospital> update(
             Caller caller,
-            Hospital source,
+            Hospital target,
             String name,
             String address,
             String contactPhone,

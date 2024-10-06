@@ -1,6 +1,7 @@
 package com.simp.service.shared.data.service;
 
 import com.simp.service.shared.data.clients.AccountClient;
+import com.simp.service.shared.data.clients.AuthClient;
 import com.simp.service.shared.domain.service.TokenService;
 import com.simp.service.shared.server.payload.account.response.TokenValidateResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +13,11 @@ import reactor.core.publisher.Mono;
 @ConditionalOnBean(AccountClient.class)
 @RequiredArgsConstructor
 public class NetworkTokenService implements TokenService {
-    private final AccountClient accountClient;
+    private final AuthClient authClient;
 
     @Override
     public Mono<Boolean> validateToken(String token) {
-        return accountClient
+        return authClient
                 .validateToken(token)
                 .map(TokenValidateResponse::success);
     }
