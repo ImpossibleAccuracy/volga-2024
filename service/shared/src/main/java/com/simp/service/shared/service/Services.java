@@ -1,4 +1,4 @@
-package com.simp.service.shared.contants;
+package com.simp.service.shared.service;
 
 import lombok.RequiredArgsConstructor;
 

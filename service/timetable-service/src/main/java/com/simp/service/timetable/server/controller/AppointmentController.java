@@ -1,15 +1,16 @@
 package com.simp.service.timetable.server.controller;
 
-import com.simp.service.shared.domain.service.AppointmentService;
-import com.simp.service.shared.domain.service.TimetableService;
 import com.simp.service.shared.server.mapper.Mappers;
 import com.simp.service.shared.server.payload.dto.AppointmentDto;
 import com.simp.service.shared.server.payload.dto.DateRangeDto;
 import com.simp.service.shared.server.payload.timetable.CreateAppointmentsRequest;
-import com.simp.service.shared.server.scheme.ApiScheme;
 import com.simp.service.shared.server.security.UserHolder;
+import com.simp.service.shared.service.ApiScheme;
+import com.simp.service.timetable.domain.service.LocalAppointmentService;
+import com.simp.service.timetable.domain.service.LocalTimetableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,8 +18,8 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 public class AppointmentController {
-    private final TimetableService timetableService;
-    private final AppointmentService appointmentService;
+    private final LocalTimetableService timetableService;
+    private final LocalAppointmentService appointmentService;
 
     @PostMapping(ApiScheme.TimetableService.TimetableAppointments)
     public Mono<AppointmentDto> create(@RequestHeader HttpHeaders headers,
@@ -41,8 +42,9 @@ public class AppointmentController {
                 .map(range -> new DateRangeDto(range.from(), range.to()));
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(ApiScheme.TimetableService.Appointment)
-    public Mono<Void> create(@RequestHeader HttpHeaders headers,
+    public Mono<Void> delete(@RequestHeader HttpHeaders headers,
                              @PathVariable("id") long id) {
         return UserHolder
                 .requireCaller(headers)

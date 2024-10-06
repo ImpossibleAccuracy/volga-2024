@@ -3,13 +3,13 @@ package com.simp.service.timetable.server.controller;
 import com.simp.service.shared.domain.service.DoctorService;
 import com.simp.service.shared.domain.service.HospitalService;
 import com.simp.service.shared.domain.service.RoomService;
-import com.simp.service.shared.domain.service.TimetableService;
 import com.simp.service.shared.server.mapper.Mappers;
 import com.simp.service.shared.server.payload.dto.TimetableDto;
 import com.simp.service.shared.server.payload.shared.DatePaginationRequest;
 import com.simp.service.shared.server.payload.timetable.TimetableCreateUpdateRequest;
-import com.simp.service.shared.server.scheme.ApiScheme;
 import com.simp.service.shared.server.security.UserHolder;
+import com.simp.service.shared.service.ApiScheme;
+import com.simp.service.timetable.domain.service.LocalTimetableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 public class TimetableController {
-    private final TimetableService timetableService;
+    private final LocalTimetableService timetableService;
     private final HospitalService hospitalService;
     private final DoctorService doctorService;
     private final RoomService roomService;
@@ -48,7 +48,7 @@ public class TimetableController {
                 .map(Mappers::toDto);
     }
 
-    @DeleteMapping(ApiScheme.TimetableService.TimetableDoctor)
+    @GetMapping(ApiScheme.TimetableService.TimetableDoctor)
     public Flux<TimetableDto> getByDoctor(@RequestHeader HttpHeaders headers,
                                           @PathVariable("id") long id,
                                           DatePaginationRequest request) {
@@ -64,7 +64,7 @@ public class TimetableController {
                 .map(Mappers::toDto);
     }
 
-    @DeleteMapping(ApiScheme.TimetableService.TimetableHospital)
+    @GetMapping(ApiScheme.TimetableService.TimetableHospital)
     public Flux<TimetableDto> getByHospital(@RequestHeader HttpHeaders headers,
                                             @PathVariable("id") long id,
                                             DatePaginationRequest request) {

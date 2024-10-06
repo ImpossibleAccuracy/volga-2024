@@ -1,4 +1,4 @@
-package com.simp.service.shared.domain.service;
+package com.simp.service.auth.domain.service;
 
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface AccountService {
+public interface LocalAccountService {
     Mono<? extends Account> create(
             Caller caller,
             String firstName,
@@ -16,6 +16,8 @@ public interface AccountService {
             String username,
             String password,
             List<String> roles);
+
+    Mono<? extends Account> getAccountUnsecured(long id);
 
     Mono<? extends Account> get(Caller caller, long id);
 

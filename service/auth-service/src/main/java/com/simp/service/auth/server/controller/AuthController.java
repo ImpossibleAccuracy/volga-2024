@@ -1,10 +1,10 @@
 package com.simp.service.auth.server.controller;
 
-import com.simp.service.auth.domain.service.AccountServiceImpl;
-import com.simp.service.auth.domain.service.TokenServiceImpl;
+import com.simp.service.auth.domain.service.LocalAccountService;
+import com.simp.service.auth.domain.service.LocalAuthService;
+import com.simp.service.auth.domain.service.TokenService;
 import com.simp.service.shared.contants.AuthConstants;
 import com.simp.service.shared.domain.exception.InvalidArgumentsException;
-import com.simp.service.shared.domain.service.AuthService;
 import com.simp.service.shared.server.mapper.Mappers;
 import com.simp.service.shared.server.payload.account.request.SignInRequest;
 import com.simp.service.shared.server.payload.account.request.SignUpRequest;
@@ -13,20 +13,22 @@ import com.simp.service.shared.server.payload.account.response.TokenValidateResp
 import com.simp.service.shared.server.payload.dto.AuthorizationDto;
 import com.simp.service.shared.server.payload.token.RefreshTokenRequest;
 import com.simp.service.shared.server.payload.token.ValidateTokenRequest;
-import com.simp.service.shared.server.scheme.ApiScheme;
 import com.simp.service.shared.server.security.UserHolder;
+import com.simp.service.shared.service.ApiScheme;
+import com.simp.service.shared.service.scheme.AuthControllerScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
-    private final AuthService authService;
-    private final AccountServiceImpl accountService; // TODO
-    private final TokenServiceImpl tokenService; // TODO
+public class AuthController implements AuthControllerScheme {
+    private final LocalAuthService authService;
+    private final LocalAccountService accountService; // TODO
+    private final TokenService tokenService; // TODO
 
     @PostMapping(ApiScheme.AccountService.Auth.SignUp)
     public Mono<AuthResponse> signUp(@RequestBody SignUpRequest request) {
@@ -84,6 +86,8 @@ public class AuthController {
                 });
     }
 
+    @Override
+    @PreAuthorize("hasRole('" + AuthConstants.SERVICE_ROLE + "')")
     @PostMapping(ApiScheme.AccountService.Auth.Full)
     public Mono<AuthorizationDto> getAuthData(@RequestHeader(AuthConstants.AUTH_HEADER) String token) {
         return authService

@@ -1,12 +1,13 @@
-package com.simp.service.hospital.domain.service;
+package com.simp.service.hospital.data.service;
 
 import com.simp.service.hospital.data.model.HospitalEntity;
 import com.simp.service.hospital.data.repository.HospitalRepository;
+import com.simp.service.hospital.domain.service.LocalHospitalService;
+import com.simp.service.hospital.domain.service.LocalRoomService;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Hospital;
 import com.simp.service.shared.domain.model.Pagination;
-import com.simp.service.shared.domain.service.HospitalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -16,9 +17,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class HospitalServiceImpl implements HospitalService {
+public class HospitalServiceImpl implements LocalHospitalService {
     private final HospitalRepository hospitalRepository;
-    private final RoomServiceImpl roomService;
+    private final LocalRoomService roomService;
 
     @Override
     public Mono<? extends Hospital> create(Caller caller,

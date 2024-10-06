@@ -1,13 +1,13 @@
-package com.simp.service.timetable.domain.service;
+package com.simp.service.timetable.data.service;
 
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Appointment;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.DateRange;
 import com.simp.service.shared.domain.model.Timetable;
-import com.simp.service.shared.domain.service.AppointmentService;
 import com.simp.service.timetable.data.model.AppointmentEntity;
 import com.simp.service.timetable.data.repository.AppointmentRepository;
+import com.simp.service.timetable.domain.service.LocalAppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -21,13 +21,16 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AppointmentServiceImpl implements AppointmentService {
+public class AppointmentServiceImpl implements LocalAppointmentService {
     public static final int TICKET_LENGTH_MINUTES = 30;
     private final AppointmentRepository appointmentRepository;
 
     @Override
     public Mono<? extends Appointment> create(Caller caller, Timetable timetable, Instant time) {
         // TODO: check rights
+
+        // TODO: check time in bounds
+
         return Mono
                 .just(AppointmentEntity.builder()
                         .time(time)
@@ -44,6 +47,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Appointment not found")));
     }
 
+    @Override
     public Mono<Boolean> existsByTimetable(Timetable timetable) {
         return appointmentRepository.existsByTimetableAndDeletedFalse(timetable.id());
     }
@@ -85,7 +89,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         var itemStart = from;
         for (int i = 0; i < ticketsCount; i++) {
-            var itemEnd = itemStart.plus((long) i * TICKET_LENGTH_MINUTES, ChronoUnit.MINUTES);
+            var itemEnd = itemStart.plus(TICKET_LENGTH_MINUTES, ChronoUnit.MINUTES);
 
             result.add(new DateRange(itemStart, itemEnd));
 

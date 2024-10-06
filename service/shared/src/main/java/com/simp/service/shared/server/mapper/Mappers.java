@@ -39,10 +39,10 @@ public final class Mappers {
     }
 
     public static Pagination<Integer> fromRequest(PaginationRequest request) {
-        return new Pagination<>(request.getFrom(), request.getCount());
+        return new Pagination<>(request.from, request.count);
     }
 
     public static Pagination<Instant> fromRequest(DatePaginationRequest request) {
-        return new Pagination<>(request.from(), request.to());
+        return new Pagination<>(request.from, request.to);
     }
 }

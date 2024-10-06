@@ -15,8 +15,8 @@ public interface TimetableRepository extends ReactiveCrudRepository<TimetableEnt
             select * from "Timetable"
             where deleted = false and
                 hospital_id = :hospital and
-                from >= :start and
-                to <= :end
+                date_from >= :start and
+                date_to <= :end
             """)
     Flux<TimetableEntity> findByHospitalAndDateRange(long hospital, Instant start, Instant end);
 
@@ -24,8 +24,8 @@ public interface TimetableRepository extends ReactiveCrudRepository<TimetableEnt
             select * from "Timetable"
             where deleted = false and
                 doctor_id = :doctor and
-                from >= :start and
-                to <= :end
+                date_from >= :start and
+                date_to <= :end
             """)
     Flux<TimetableEntity> findByDoctorAndDateRange(long doctor, Instant start, Instant end);
 
@@ -33,8 +33,8 @@ public interface TimetableRepository extends ReactiveCrudRepository<TimetableEnt
             select * from "Timetable"
             where deleted = false and
                 room_id = :room and
-                from >= :start and
-                to <= :end
+                date_from >= :start and
+                date_to <= :end
             """)
     Flux<TimetableEntity> findByRoomAndDateRange(long room, Instant start, Instant end);
 

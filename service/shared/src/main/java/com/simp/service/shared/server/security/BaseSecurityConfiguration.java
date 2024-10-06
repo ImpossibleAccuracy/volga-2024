@@ -1,5 +1,6 @@
 package com.simp.service.shared.server.security;
 
+import com.simp.service.shared.domain.properties.SecurityProperties;
 import com.simp.service.shared.domain.service.AuthService;
 import com.simp.service.shared.server.security.auth.JwtAuthenticationManager;
 import com.simp.service.shared.server.security.auth.JwtSecurityContextRepository;
@@ -13,10 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class BaseSecurityConfiguration {
     public static ServerHttpSecurity applySecurityFilter(
             AuthService authService,
-            ServerHttpSecurity http
+            ServerHttpSecurity http,
+            SecurityProperties securityProperties
     ) {
         var manager = new JwtAuthenticationManager(authService);
-        var repo = new JwtSecurityContextRepository(manager);
+        var repo = new JwtSecurityContextRepository(manager, securityProperties);
 
         return http
                 .authenticationManager(manager)

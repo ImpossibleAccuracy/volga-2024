@@ -14,7 +14,7 @@ public final class UserHolder {
                 .map(ctx -> {
                     try {
                         return ((Account) ctx.getAuthentication().getPrincipal());
-                    } catch (ClassCastException e) {
+                    } catch (ClassCastException | NullPointerException e) {
                         return null;
                     }
                 });
@@ -25,10 +25,15 @@ public final class UserHolder {
                 .switchIfEmpty(Mono.error(new UnauthorizedException("No user presented")));
     }
 
+    @Deprecated
     public static Mono<Caller> requireCaller(HttpHeaders headers) {
+        return requireCaller(headers.getFirst(AuthConstants.AUTH_HEADER));
+    }
+
+    public static Mono<Caller> requireCaller(String token) {
         return requireAccount()
                 .map(account -> new Caller(
-                        headers.getFirst(AuthConstants.AUTH_HEADER),
+                        token,
                         account
                 ));
     }

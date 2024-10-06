@@ -14,6 +14,12 @@ app:
     ttl: 604800000
   services:
     auth: false
+  security:
+    service-credentials:
+      - name: TEST_USER_1
+        password: TEST_USER_PASS_1
+      - name: TEST_USER_2
+        password: TEST_USER_PASS_2
 
 spring:
   cloud:

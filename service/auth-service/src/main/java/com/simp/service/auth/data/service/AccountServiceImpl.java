@@ -1,12 +1,12 @@
-package com.simp.service.auth.domain.service;
+package com.simp.service.auth.data.service;
 
 import com.simp.service.auth.data.model.AccountEntity;
 import com.simp.service.auth.data.repository.AccountRepository;
+import com.simp.service.auth.domain.service.LocalAccountService;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Pagination;
-import com.simp.service.shared.domain.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements LocalAccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -36,6 +36,7 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.save(account);
     }
 
+    @Override
     public Mono<? extends Account> getAccountUnsecured(long id) {
         return accountRepository
                 .findByIdAndDeletedFalse(id)

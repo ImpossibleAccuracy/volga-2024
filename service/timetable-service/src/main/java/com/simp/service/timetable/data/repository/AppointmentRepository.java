@@ -14,7 +14,7 @@ public interface AppointmentRepository extends ReactiveCrudRepository<Appointmen
     Mono<AppointmentEntity> findByIdAndDeletedFalse(long id);
 
     @Query("""
-            update "Appointment"
+            update "Appointments"
             set deleted = true
             where id = :id
             """)

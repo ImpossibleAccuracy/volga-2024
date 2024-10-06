@@ -1,4 +1,4 @@
-package com.simp.service.shared.server.scheme;
+package com.simp.service.shared.service;
 
 public final class ApiScheme {
     public static final class AccountService {
@@ -28,6 +28,8 @@ public final class ApiScheme {
         public static final String Hospitals = "/api/Hospitals";
         public static final String HospitalDetails = "/api/Hospitals/{id}";
         public static final String HospitalRooms = "/api/Hospitals/{id}/Rooms";
+        public static final String HospitalRoomDetails = "/api/Hospitals/{id}/Rooms/{room}";
+        public static final String HospitalRoomNameDetails = "/api/Hospitals/{id}/Rooms/Name/{room}";
     }
 
     public static final class TimetableService {

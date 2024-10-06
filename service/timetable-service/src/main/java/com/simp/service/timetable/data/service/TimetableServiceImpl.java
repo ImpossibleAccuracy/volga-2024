@@ -1,11 +1,12 @@
-package com.simp.service.timetable.domain.service;
+package com.simp.service.timetable.data.service;
 
 import com.simp.service.shared.domain.exception.InvalidArgumentsException;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.*;
-import com.simp.service.shared.domain.service.TimetableService;
 import com.simp.service.timetable.data.model.TimetableEntity;
 import com.simp.service.timetable.data.repository.TimetableRepository;
+import com.simp.service.timetable.domain.service.LocalAppointmentService;
+import com.simp.service.timetable.domain.service.LocalTimetableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -13,15 +14,15 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoField;
+import java.time.ZoneOffset;
 
 @Service
 @RequiredArgsConstructor
-public class TimetableServiceImpl implements TimetableService {
+public class TimetableServiceImpl implements LocalTimetableService {
     private static final int MAX_APPOINTMENT_DURATION_HOURS = 12;
 
     private final TimetableRepository timetableRepository;
-    private final AppointmentServiceImpl appointmentService; // TODO
+    private final LocalAppointmentService appointmentService; // TODO
 
     @Override
     public Mono<? extends Timetable> create(Caller caller, Hospital hospital, Account doctor, Instant from, Instant to, Room room) {
@@ -110,15 +111,19 @@ public class TimetableServiceImpl implements TimetableService {
             throw new InvalidArgumentsException("Appointment duration cannot exceed than %d hours".formatted(MAX_APPOINTMENT_DURATION_HOURS));
         }
 
-        if (from.get(ChronoField.MINUTE_OF_HOUR) % 30 != 0) {
+        var fromZoned = from.atZone(ZoneOffset.UTC);
+
+        if (fromZoned.getMinute() % 30 != 0) {
             throw new InvalidArgumentsException("Start time must be a multiple of 30 minutes.");
         }
 
-        if (to.get(ChronoField.MINUTE_OF_HOUR) % 30 != 0) {
+        var toZoned = to.atZone(ZoneOffset.UTC);
+
+        if (toZoned.getMinute() % 30 != 0) {
             throw new InvalidArgumentsException("End time must be a multiple of 30 minutes.");
         }
 
-        if (from.get(ChronoField.SECOND_OF_MINUTE) != 0 || to.get(ChronoField.SECOND_OF_MINUTE) != 0) {
+        if (fromZoned.getSecond() != 0 || toZoned.getSecond() != 0) {
             throw new InvalidArgumentsException("No seconds allowed! 🤡"); // TODO
         }
     }

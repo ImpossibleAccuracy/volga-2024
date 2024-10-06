@@ -40,8 +40,8 @@ CREATE TABLE "Timetable" (
   "creator_id" int NOT NULL,
   "hospital_id" int NOT NULL,
   "doctor_id" int NOT NULL,
-  "from" timestamp NOT NULL,
-  "to" timestamp NOT NULL,
+  "date_from" timestamp NOT NULL,
+  "date_to" timestamp NOT NULL,
   "room_id" int NOT NULL,
   "deleted" boolean NOT NULL
 );

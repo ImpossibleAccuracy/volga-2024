@@ -27,13 +27,13 @@ public class TimetableEntity extends BaseAuditEntity implements Timetable {
     @Column("doctor_id")
     private long doctor;
 
-    @Column("room")
+    @Column("room_id")
     private long room;
 
-    @Column("from")
+    @Column("date_from")
     private Instant from;
 
-    @Column("to")
+    @Column("date_to")
     private Instant to;
 
     @Column("deleted")

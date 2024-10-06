@@ -1,16 +1,17 @@
-package com.simp.service.auth.domain.service;
+package com.simp.service.auth.data.service;
 
 import com.simp.service.auth.data.model.AccountEntity;
 import com.simp.service.auth.data.model.RoleEntity;
 import com.simp.service.auth.data.repository.AccountRepository;
 import com.simp.service.auth.data.repository.RoleRepository;
 import com.simp.service.auth.domain.model.AuthorizationImpl;
+import com.simp.service.auth.domain.service.LocalAuthService;
 import com.simp.service.shared.domain.exception.InvalidArgumentsException;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
+import com.simp.service.shared.domain.exception.UnauthorizedException;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Authorization;
 import com.simp.service.shared.domain.model.Caller;
-import com.simp.service.shared.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements LocalAuthService {
     private final AccountRepository accountRepository;
     private final RoleRepository roleRepository;
     private final TokenServiceImpl tokenService; // TODO
@@ -69,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
     public Mono<? extends Authorization> authUser(String token) {
         return tokenService
                 .getTokenData(token)
+                .switchIfEmpty(Mono.error(new UnauthorizedException("Token invalid or expired")))
                 .flatMap(accountRepository::findByIdAndDeletedFalse)
                 .zipWhen(account -> roleRepository.findByAccountId(account.id()).collectList())
                 .map(tuple -> {

@@ -1,11 +1,11 @@
-package com.simp.service.auth.domain.service;
+package com.simp.service.auth.data.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.simp.service.auth.domain.properties.TokenProperties;
+import com.simp.service.auth.domain.service.TokenService;
 import com.simp.service.shared.domain.model.Account;
-import com.simp.service.shared.domain.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -18,6 +18,7 @@ import java.util.Objects;
 public class TokenServiceImpl implements TokenService {
     private final TokenProperties tokenProperties;
 
+    @Override
     public Mono<Long> getTokenData(String token) {
         return Mono.fromCallable(() -> {
             try {
@@ -31,12 +32,13 @@ public class TokenServiceImpl implements TokenService {
                 var claim = jwt.getClaim(tokenProperties.claimName);
 
                 return claim.asLong();
-            } catch (JWTDecodeException e) {
+            } catch (JWTDecodeException | NullPointerException e) {
                 return null;
             }
         });
     }
 
+    @Override
     public String generateToken(Account account) {
         return JWT.create()
                 .withAudience(tokenProperties.audience)
