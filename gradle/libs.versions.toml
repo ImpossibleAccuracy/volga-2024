@@ -20,6 +20,7 @@ gson = "2.11.0"
 spring-web = { module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "spring" }
 spring-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring" }
 spring-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring" }
+spring-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring" }
 spring-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "spring" }
 
 # SPRING CLOUD

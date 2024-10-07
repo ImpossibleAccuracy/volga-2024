@@ -2,8 +2,11 @@ package com.simp.service.shared.server.payload.account.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
-public record SignUpRequest(
+import java.util.List;
+
+public record AccountCreateUpdateRequest(
         @NotBlank
         @JsonProperty("lastName")
         String lastName,
@@ -18,6 +21,10 @@ public record SignUpRequest(
 
         @NotBlank
         @JsonProperty("password")
-        String password
+        String password,
+
+        @NotEmpty
+        @JsonProperty("roles")
+        List<String> roles
 ) {
 }

@@ -10,6 +10,7 @@ import com.simp.service.shared.server.payload.timetable.TimetableCreateUpdateReq
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.timetable.domain.service.LocalTimetableService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class TimetableController {
 
     @PostMapping(ApiScheme.TimetableService.Timetable)
     public Mono<TimetableDto> create(@RequestHeader HttpHeaders headers,
-                                     @RequestBody TimetableCreateUpdateRequest request) {
+                                     @RequestBody @Valid TimetableCreateUpdateRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> {
@@ -51,7 +52,7 @@ public class TimetableController {
     @GetMapping(ApiScheme.TimetableService.TimetableDoctor)
     public Flux<TimetableDto> getByDoctor(@RequestHeader HttpHeaders headers,
                                           @PathVariable("id") long id,
-                                          DatePaginationRequest request) {
+                                          @Valid DatePaginationRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .zipWhen(caller ->
@@ -67,7 +68,7 @@ public class TimetableController {
     @GetMapping(ApiScheme.TimetableService.TimetableHospital)
     public Flux<TimetableDto> getByHospital(@RequestHeader HttpHeaders headers,
                                             @PathVariable("id") long id,
-                                            DatePaginationRequest request) {
+                                            @Valid DatePaginationRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .zipWhen(caller ->
@@ -84,7 +85,7 @@ public class TimetableController {
     public Flux<TimetableDto> getByRoom(@RequestHeader HttpHeaders headers,
                                         @PathVariable("id") long hospitalId,
                                         @PathVariable("room") long roomId,
-                                        DatePaginationRequest request) {
+                                        @Valid DatePaginationRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .zipWhen(caller -> hospitalService.get(caller, hospitalId))
@@ -100,7 +101,7 @@ public class TimetableController {
 
     @PutMapping(ApiScheme.TimetableService.TimetableDetails)
     public Mono<TimetableDto> update(@RequestHeader HttpHeaders headers,
-                                     @RequestBody TimetableCreateUpdateRequest request,
+                                     @RequestBody @Valid TimetableCreateUpdateRequest request,
                                      @PathVariable("id") long id) {
         return UserHolder
                 .requireCaller(headers)

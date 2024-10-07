@@ -8,6 +8,7 @@ import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.timetable.domain.service.LocalAppointmentService;
 import com.simp.service.timetable.domain.service.LocalTimetableService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class AppointmentController {
 
     @PostMapping(ApiScheme.TimetableService.TimetableAppointments)
     public Mono<AppointmentDto> create(@RequestHeader HttpHeaders headers,
-                                       @RequestBody CreateAppointmentsRequest request,
+                                       @RequestBody @Valid CreateAppointmentsRequest request,
                                        @PathVariable("id") long id) {
         return UserHolder
                 .requireCaller(headers)

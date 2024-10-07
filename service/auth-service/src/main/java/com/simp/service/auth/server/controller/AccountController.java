@@ -6,6 +6,7 @@ import com.simp.service.shared.server.payload.account.request.AccountUpdateReque
 import com.simp.service.shared.server.payload.dto.AccountDto;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class AccountController {
 
     @PutMapping(ApiScheme.AccountService.Account.Update)
     public Mono<AccountDto> updateMe(@RequestHeader HttpHeaders headers,
-                                     @RequestBody AccountUpdateRequest request) {
+                                     @RequestBody @Valid AccountUpdateRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> accountService

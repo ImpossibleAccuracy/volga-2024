@@ -10,6 +10,7 @@ import com.simp.service.shared.server.payload.dto.HistoryDto;
 import com.simp.service.shared.server.payload.history.HistoryCreateUpdateRequest;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class HistoryController {
 
     @PostMapping(ApiScheme.HistoryService.History)
     public Mono<HistoryDto> create(@RequestHeader HttpHeaders headers,
-                                   @RequestBody HistoryCreateUpdateRequest request) {
+                                   @RequestBody @Valid HistoryCreateUpdateRequest request) {
         return UserHolder.requireCaller(headers)
                 .flatMap(caller -> {
                     var patient = accountService.get(caller, request.patientId());
@@ -75,7 +76,7 @@ public class HistoryController {
     @PostMapping(ApiScheme.HistoryService.HistoryDetails)
     public Mono<HistoryDto> create(@RequestHeader HttpHeaders headers,
                                    @PathVariable("id") long id,
-                                   @RequestBody HistoryCreateUpdateRequest request) {
+                                   @RequestBody @Valid HistoryCreateUpdateRequest request) {
         return UserHolder.requireCaller(headers)
                 .flatMap(caller -> {
                     var target = historyService.get(caller, id);

@@ -9,6 +9,7 @@ dependencies {
     api(libs.spring.web)
     api(libs.spring.security)
     api(libs.spring.actuator)
+    api(libs.spring.validation)
     developmentOnly(libs.spring.devtools)
 
     // SPRING CLOUD DEPENDENCIES
@@ -22,7 +23,6 @@ dependencies {
 
     // DATABASE
     implementation(libs.spring.r2dbc)
-//    implementation(libs.spring.jdbc)
 
     // LOMBOK
     compileOnly(libs.lombok)

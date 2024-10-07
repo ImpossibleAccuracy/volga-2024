@@ -9,6 +9,7 @@ import com.simp.service.shared.server.payload.shared.PaginationRequest;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.shared.service.scheme.HospitalControllerScheme;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class HospitalController implements HospitalControllerScheme {
     // TODO: admin
     @PostMapping(ApiScheme.HospitalsService.Hospitals)
     public Mono<HospitalDto> newHospital(@RequestHeader HttpHeaders headers,
-                                         @RequestBody HospitalCreateUpdateRequest request) {
+                                         @RequestBody @Valid HospitalCreateUpdateRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> hospitalService.create(
@@ -39,7 +40,7 @@ public class HospitalController implements HospitalControllerScheme {
 
     @GetMapping(ApiScheme.HospitalsService.Hospitals)
     public Flux<HospitalDto> getAll(@RequestHeader HttpHeaders headers,
-                                    PaginationRequest pagination) {
+                                    @Valid PaginationRequest pagination) {
         return UserHolder
                 .requireCaller(headers)
                 .flatMapMany(caller -> hospitalService.getList(caller, Mappers.fromRequest(pagination)))
@@ -60,7 +61,7 @@ public class HospitalController implements HospitalControllerScheme {
     @PutMapping(ApiScheme.HospitalsService.HospitalDetails)
     public Mono<HospitalDto> update(@RequestHeader HttpHeaders headers,
                                     @PathVariable("id") long id,
-                                    @RequestBody HospitalCreateUpdateRequest request) {
+                                    @RequestBody @Valid HospitalCreateUpdateRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .zipWhen(caller -> hospitalService.get(caller, id))

@@ -16,6 +16,7 @@ import com.simp.service.shared.server.payload.token.ValidateTokenRequest;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.shared.service.scheme.AuthControllerScheme;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class AuthController implements AuthControllerScheme {
     private final TokenService tokenService; // TODO
 
     @PostMapping(ApiScheme.AccountService.Auth.SignUp)
-    public Mono<AuthResponse> signUp(@RequestBody SignUpRequest request) {
+    public Mono<AuthResponse> signUp(@RequestBody @Valid SignUpRequest request) {
         return authService
                 .signUp(request.lastName(), request.firstName(), request.username(), request.password())
                 .map(a -> new AuthResponse(
@@ -41,7 +42,7 @@ public class AuthController implements AuthControllerScheme {
     }
 
     @PostMapping(ApiScheme.AccountService.Auth.SignIn)
-    public Mono<AuthResponse> signIn(@RequestBody SignInRequest request) {
+    public Mono<AuthResponse> signIn(@RequestBody @Valid SignInRequest request) {
         return authService
                 .signIn(request.username(), request.password())
                 .map(a -> new AuthResponse(
@@ -59,14 +60,14 @@ public class AuthController implements AuthControllerScheme {
     }
 
     @GetMapping(ApiScheme.AccountService.Auth.Validate)
-    public Mono<TokenValidateResponse> validate(ValidateTokenRequest request) {
+    public Mono<TokenValidateResponse> validate(@Valid ValidateTokenRequest request) {
         return tokenService
                 .validateToken(request.accessToken())
                 .map(TokenValidateResponse::new);
     }
 
     @PostMapping(ApiScheme.AccountService.Auth.Refresh)
-    public Mono<AuthResponse> refresh(@RequestBody RefreshTokenRequest request) {
+    public Mono<AuthResponse> refresh(@RequestBody @Valid RefreshTokenRequest request) {
         return tokenService.getTokenData(request.token())
                 .flatMap((data) -> {
                     if (data == null) {

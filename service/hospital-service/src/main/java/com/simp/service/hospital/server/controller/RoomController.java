@@ -9,6 +9,7 @@ import com.simp.service.shared.server.payload.shared.PaginationRequest;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.shared.service.scheme.RoomControllerScheme;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,7 +29,7 @@ public class RoomController implements RoomControllerScheme {
     @GetMapping(ApiScheme.HospitalsService.HospitalRooms)
     public Flux<RoomDto> getAllRooms(@RequestHeader HttpHeaders headers,
                                      @PathVariable("id") long id,
-                                     PaginationRequest pagination) {
+                                     @Valid PaginationRequest pagination) {
         return UserHolder
                 .requireCaller(headers)
                 .zipWhen(caller -> hospitalService.get(caller, id))

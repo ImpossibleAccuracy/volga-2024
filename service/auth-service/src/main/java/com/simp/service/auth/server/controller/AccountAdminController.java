@@ -3,12 +3,13 @@ package com.simp.service.auth.server.controller;
 import com.simp.service.auth.domain.service.LocalAccountService;
 import com.simp.service.shared.contants.AuthConstants;
 import com.simp.service.shared.server.mapper.Mappers;
-import com.simp.service.shared.server.payload.account.request.AccountCreateRequest;
+import com.simp.service.shared.server.payload.account.request.AccountCreateUpdateRequest;
 import com.simp.service.shared.server.payload.dto.AccountDto;
 import com.simp.service.shared.server.payload.shared.PaginationRequest;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.shared.service.scheme.AccountControllerScheme;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class AccountAdminController implements AccountControllerScheme {
     // TODO: admin
     @PostMapping(ApiScheme.AccountService.Account.Accounts)
     public Mono<AccountDto> create(@RequestHeader HttpHeaders headers,
-                                   @RequestBody AccountCreateRequest request) {
+                                   @RequestBody @Valid AccountCreateUpdateRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> accountService
@@ -51,7 +52,7 @@ public class AccountAdminController implements AccountControllerScheme {
     // TODO: admin
     @GetMapping(ApiScheme.AccountService.Account.Accounts)
     public Flux<AccountDto> getAll(@RequestHeader HttpHeaders headers,
-                                   PaginationRequest request) {
+                                   @Valid PaginationRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .flatMapMany(caller -> accountService
@@ -63,7 +64,7 @@ public class AccountAdminController implements AccountControllerScheme {
     @PutMapping(ApiScheme.AccountService.Account.AccountDetails)
     public Mono<AccountDto> updateAccount(@PathVariable("id") long id,
                                           @RequestHeader HttpHeaders headers,
-                                          @RequestBody AccountCreateRequest request) {
+                                          @RequestBody @Valid AccountCreateUpdateRequest request) {
         return UserHolder
                 .requireCaller(headers)
                 .flatMap(caller -> accountService

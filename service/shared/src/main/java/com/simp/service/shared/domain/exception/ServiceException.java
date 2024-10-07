@@ -1,11 +1,10 @@
 package com.simp.service.shared.domain.exception;
 
-// TODO: add exception handler
-public class ServiceException extends RuntimeException {
-    public final int status;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.server.ResponseStatusException;
 
+public class ServiceException extends ResponseStatusException {
     public ServiceException(String message, int status) {
-        super(message);
-        this.status = status;
+        super(HttpStatusCode.valueOf(status), message);
     }
 }
