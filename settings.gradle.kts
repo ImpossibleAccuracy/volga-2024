@@ -25,4 +25,5 @@ include(
     ":service:auth-service",
     ":service:hospital-service",
     ":service:timetable-service",
+    ":service:history-service",
 )

@@ -3,12 +3,13 @@ package com.simp.service.auth.domain.service;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Pagination;
+import com.simp.service.shared.domain.service.AccountService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface LocalAccountService {
+public interface LocalAccountService extends AccountService {
     Mono<? extends Account> create(
             Caller caller,
             String firstName,
@@ -18,8 +19,6 @@ public interface LocalAccountService {
             List<String> roles);
 
     Mono<? extends Account> getAccountUnsecured(long id);
-
-    Mono<? extends Account> get(Caller caller, long id);
 
     Flux<? extends Account> getList(Caller caller, Pagination<Integer> pagination);
 

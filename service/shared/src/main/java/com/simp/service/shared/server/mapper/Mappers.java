@@ -32,6 +32,12 @@ public final class Mappers {
         return new TimetableDto(item.id(), item.hospital(), item.doctor(), item.from(), item.to(), item.room());
     }
 
+    public static HistoryDto toDto(History item) {
+        if (item instanceof HistoryDto) return (HistoryDto) item;
+
+        return new HistoryDto(item.id(), item.date(), item.patient(), item.doctor(), item.room(), item.data());
+    }
+
     public static AppointmentDto toDto(Appointment item) {
         if (item instanceof AppointmentDto) return (AppointmentDto) item;
 

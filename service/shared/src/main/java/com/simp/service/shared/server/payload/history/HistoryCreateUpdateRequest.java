@@ -1,12 +1,12 @@
 package com.simp.service.shared.server.payload.history;
 
-import java.util.Date;
+import java.time.Instant;
 
 public record HistoryCreateUpdateRequest(
-        Date date,
-        int pacientId,
-        int hospitalId,
-        int doctorId,
+        Instant date,
+        long patientId,
+        long hospitalId,
+        long doctorId,
         String room,
         String data
 ) {

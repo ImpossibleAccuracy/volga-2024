@@ -18,4 +18,9 @@ public final class Services {
         public static final String Name = "timetable-service";
         public static final String Key = "app.services.timetable";
     }
+
+    public static final class History {
+        public static final String Name = "history-service";
+        public static final String Key = "app.services.history";
+    }
 }
