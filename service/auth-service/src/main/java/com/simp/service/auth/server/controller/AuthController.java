@@ -28,8 +28,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AuthController implements AuthControllerScheme {
     private final LocalAuthService authService;
-    private final LocalAccountService accountService; // TODO
-    private final TokenService tokenService; // TODO
+    private final LocalAccountService accountService;
+    private final TokenService tokenService;
 
     @PostMapping(ApiScheme.AccountService.Auth.SignUp)
     public Mono<AuthResponse> signUp(@RequestBody @Valid SignUpRequest request) {

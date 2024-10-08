@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @RequiredArgsConstructor
 @ConfigurationProperties(prefix = "app.token")
 public class TokenProperties {
-    // TODO: add validation
     public final String secret;
     public final String issuer;
     public final String audience;

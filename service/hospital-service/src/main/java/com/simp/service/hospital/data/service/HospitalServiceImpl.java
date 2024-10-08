@@ -75,7 +75,6 @@ public class HospitalServiceImpl implements LocalHospitalService {
                         .name(name)
                         .address(address)
                         .contactPhone(contactPhone)
-                        // TODO: add rooms
                         .build())
                 .flatMap(hospitalRepository::save)
                 .doOnSuccess(hospital -> roomService

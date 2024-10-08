@@ -27,7 +27,6 @@ public class BaseSecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // TODO: secure password encoder
         return new BCryptPasswordEncoder();
     }
 }
