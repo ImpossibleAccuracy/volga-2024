@@ -1,4 +1,4 @@
-package com.simp.service.shared.data.config;
+package com.simp.service.shared.data.config.database;
 
 import com.simp.service.shared.domain.model.Account;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
