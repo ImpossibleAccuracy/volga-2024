@@ -1,6 +1,7 @@
 package com.simp.service.auth.data.model;
 
 import com.simp.service.shared.data.model.BaseEntity;
+import com.simp.service.shared.domain.security.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,5 +20,5 @@ import org.springframework.data.relational.core.mapping.Table;
 @Accessors(fluent = true, chain = true)
 public class RoleEntity extends BaseEntity {
     @Column("title")
-    private String title;
+    private UserRole title;
 }

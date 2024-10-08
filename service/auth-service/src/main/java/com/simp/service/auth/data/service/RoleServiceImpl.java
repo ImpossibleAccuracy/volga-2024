@@ -6,7 +6,9 @@ import com.simp.service.auth.data.repository.RoleAccountRepository;
 import com.simp.service.auth.data.repository.RoleRepository;
 import com.simp.service.auth.domain.service.RoleService;
 import com.simp.service.shared.data.model.BaseEntity;
+import com.simp.service.shared.domain.exception.InvalidArgumentsException;
 import com.simp.service.shared.domain.model.Account;
+import com.simp.service.shared.domain.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -21,6 +23,17 @@ public class RoleServiceImpl implements RoleService {
     private final RoleAccountRepository roleAccountRepository;
 
     @Override
+    public void verifyRoles(List<String> roles) {
+        for (String role : roles) {
+            try {
+                UserRole.valueOf(role);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidArgumentsException("Role [%s] not found".formatted(role));
+            }
+        }
+    }
+
+    @Override
     public Mono<Void> setAccountRoles(Account account, List<String> roles) {
         return roleRepository
                 .findByAccountId(account.id())
@@ -29,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
                     var newRolesTitles = roles.stream()
                             .filter(r -> savedRoles
                                     .stream()
-                                    .noneMatch(r2 -> r.equalsIgnoreCase(r2.title())))
+                                    .noneMatch(r2 -> r.equalsIgnoreCase(r2.title().name())))
                             .toList();
 
                     var newRoles = roleRepository.findByTitleInIgnoreCase(newRolesTitles)
@@ -44,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
                             .stream()
                             .filter(role -> roles
                                     .stream()
-                                    .noneMatch(t -> t.equalsIgnoreCase(role.title())))
+                                    .noneMatch(t -> t.equalsIgnoreCase(role.title().name())))
                             .map(BaseEntity::id)
                             .toList();
 

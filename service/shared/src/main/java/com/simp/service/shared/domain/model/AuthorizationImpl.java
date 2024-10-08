@@ -4,9 +4,5 @@ import com.simp.service.shared.domain.security.UserRole;
 
 import java.util.List;
 
-public record Caller(
-        String token,
-        Account account,
-        List<UserRole> roles
-) {
+public record AuthorizationImpl(Account account, List<UserRole> roles) implements Authorization {
 }

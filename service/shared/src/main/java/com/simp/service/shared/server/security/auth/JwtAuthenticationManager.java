@@ -1,6 +1,7 @@
 package com.simp.service.shared.server.security.auth;
 
-import com.simp.service.shared.domain.model.Account;
+import com.simp.service.shared.domain.model.Authorization;
+import com.simp.service.shared.domain.security.UserRole;
 import com.simp.service.shared.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -11,7 +12,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Lazy
@@ -26,13 +26,15 @@ public class JwtAuthenticationManager implements ReactiveAuthenticationManager {
 
         return authService
                 .authUser(jwtToken)
-                .map(auth -> getAuthorities(auth.account(), auth.roles()));
+                .map(this::getAuthorities);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthorities(Account account, List<String> roles) {
+    private UsernamePasswordAuthenticationToken getAuthorities(Authorization authorization) {
         return new UsernamePasswordAuthenticationToken(
-                account, null,
-                roles.stream()
+                authorization, null,
+                authorization.roles()
+                        .stream()
+                        .map(UserRole::name)
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList()));
     }

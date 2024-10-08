@@ -93,6 +93,12 @@ public class AuthController implements AuthControllerScheme {
     public Mono<AuthorizationDto> getAuthData(@RequestHeader(AuthConstants.AUTH_HEADER) String token) {
         return authService
                 .authUser(token)
-                .map(a -> new AuthorizationDto(Mappers.toDto(a.account()), a.roles()));
+                .map(a -> new AuthorizationDto(
+                        Mappers.toDto(a.account()),
+                        a.roles()
+                                .stream()
+                                .map(Enum::name)
+                                .toList()
+                ));
     }
 }

@@ -27,6 +27,8 @@ public class AccountServiceImpl implements LocalAccountService {
     public Mono<? extends Account> create(Caller caller, String firstName, String lastName, String username, String password, List<String> roles) {
         // TODO: check admin
 
+        roleService.verifyRoles(roles);
+
         AccountEntity account = AccountEntity.builder()
                 .username(username)
                 .firstName(firstName)
@@ -80,6 +82,8 @@ public class AccountServiceImpl implements LocalAccountService {
                                           String password,
                                           List<String> roles) {
         // TODO: check access
+
+        roleService.verifyRoles(roles);
 
         var entity = (AccountEntity) target;
 
