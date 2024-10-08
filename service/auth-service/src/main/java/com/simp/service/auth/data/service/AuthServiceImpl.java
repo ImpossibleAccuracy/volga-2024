@@ -1,9 +1,11 @@
 package com.simp.service.auth.data.service;
 
 import com.simp.service.auth.data.model.AccountEntity;
+import com.simp.service.auth.data.model.RevokedTokenEntity;
 import com.simp.service.auth.data.model.RoleEntity;
 import com.simp.service.auth.data.repository.AccountRepository;
 import com.simp.service.auth.data.repository.RoleRepository;
+import com.simp.service.auth.data.repository.TokenRepository;
 import com.simp.service.auth.domain.model.AuthorizationImpl;
 import com.simp.service.auth.domain.service.LocalAuthService;
 import com.simp.service.shared.domain.exception.InvalidArgumentsException;
@@ -24,6 +26,7 @@ public class AuthServiceImpl implements LocalAuthService {
     private final RoleRepository roleRepository;
     private final TokenServiceImpl tokenService; // TODO
     private final PasswordEncoder passwordEncoder;
+    private final TokenRepository tokenRepository;
 
     @Override
     public Mono<? extends Account> signUp(String lastName, String firstName, String username, String password) {
@@ -61,15 +64,31 @@ public class AuthServiceImpl implements LocalAuthService {
 
     @Override
     public Mono<Void> signOut(Caller account) {
-        // TODO
-
-        throw new IllegalStateException("Not yet implemented");
+        return tokenRepository.existsByToken(account.token())
+                .handle((exists, sync) -> {
+                    if (exists) {
+                        sync.complete();
+                    } else {
+                        sync.next(false);
+                    }
+                })
+                .map(a -> RevokedTokenEntity.builder().token(account.token()).build())
+                .flatMap(tokenRepository::save)
+                .then();
     }
 
     @Override
     public Mono<? extends Authorization> authUser(String token) {
-        return tokenService
-                .getTokenData(token)
+        return tokenRepository
+                .existsByToken(token)
+                .handle((exists, sync) -> {
+                    if (exists) {
+                        sync.complete();
+                    } else {
+                        sync.next(false);
+                    }
+                })
+                .flatMap(a -> tokenService.getTokenData(token))
                 .switchIfEmpty(Mono.error(new UnauthorizedException("Token invalid or expired")))
                 .flatMap(accountRepository::findByIdAndDeletedFalse)
                 .zipWhen(account -> roleRepository.findByAccountId(account.id()).collectList())

@@ -12,6 +12,11 @@ CREATE TABLE "Role" (
   "title" varchar UNIQUE NOT NULL
 );
 
+CREATE TABLE "RevokedToken" (
+  "id" SERIAL PRIMARY KEY,
+  "token" varchar UNIQUE NOT NULL
+);
+
 CREATE TABLE "Role_Account" (
   "role_id" int,
   "account_id" int,
