@@ -6,6 +6,8 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
+import java.util.Collection;
+
 @Repository
 public interface RoleRepository extends ReactiveCrudRepository<RoleEntity, Long> {
     @Query(value = """
@@ -14,4 +16,6 @@ public interface RoleRepository extends ReactiveCrudRepository<RoleEntity, Long>
             where ra.account_id = :id
             """)
     Flux<RoleEntity> findByAccountId(Long id);
+
+    Flux<RoleEntity> findByTitleInIgnoreCase(Collection<String> titles);
 }

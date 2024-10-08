@@ -4,10 +4,11 @@ import com.simp.service.auth.data.model.AccountEntity;
 import com.simp.service.auth.data.model.RevokedTokenEntity;
 import com.simp.service.auth.data.model.RoleEntity;
 import com.simp.service.auth.data.repository.AccountRepository;
-import com.simp.service.auth.data.repository.RoleRepository;
 import com.simp.service.auth.data.repository.TokenRepository;
 import com.simp.service.auth.domain.model.AuthorizationImpl;
 import com.simp.service.auth.domain.service.LocalAuthService;
+import com.simp.service.auth.domain.service.RoleService;
+import com.simp.service.auth.domain.service.TokenService;
 import com.simp.service.shared.domain.exception.InvalidArgumentsException;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.exception.UnauthorizedException;
@@ -23,8 +24,8 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements LocalAuthService {
     private final AccountRepository accountRepository;
-    private final RoleRepository roleRepository;
-    private final TokenServiceImpl tokenService; // TODO
+    private final TokenService tokenService;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
     private final TokenRepository tokenRepository;
 
@@ -91,7 +92,7 @@ public class AuthServiceImpl implements LocalAuthService {
                 .flatMap(a -> tokenService.getTokenData(token))
                 .switchIfEmpty(Mono.error(new UnauthorizedException("Token invalid or expired")))
                 .flatMap(accountRepository::findByIdAndDeletedFalse)
-                .zipWhen(account -> roleRepository.findByAccountId(account.id()).collectList())
+                .zipWhen(account -> roleService.getByAccount(account).collectList())
                 .map(tuple -> {
                     var roles = tuple.getT2()
                             .stream()

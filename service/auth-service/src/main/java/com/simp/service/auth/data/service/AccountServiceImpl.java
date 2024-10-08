@@ -3,6 +3,7 @@ package com.simp.service.auth.data.service;
 import com.simp.service.auth.data.model.AccountEntity;
 import com.simp.service.auth.data.repository.AccountRepository;
 import com.simp.service.auth.domain.service.LocalAccountService;
+import com.simp.service.auth.domain.service.RoleService;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
@@ -18,6 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements LocalAccountService {
+    private final RoleService roleService;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -33,7 +35,9 @@ public class AccountServiceImpl implements LocalAccountService {
                 // TODO: add roles
                 .build();
 
-        return accountRepository.save(account);
+        return accountRepository
+                .save(account)
+                .doOnSuccess(a -> roleService.setAccountRoles(a, roles).subscribe());
     }
 
     @Override
@@ -83,10 +87,11 @@ public class AccountServiceImpl implements LocalAccountService {
                 .firstName(firstName)
                 .lastName(lastName)
                 .password(passwordEncoder.encode(password))
-                // TODO: add roles
                 .build();
 
-        return accountRepository.save(update);
+        return accountRepository
+                .save(update)
+                .doOnSuccess(a -> roleService.setAccountRoles(a, roles).subscribe());
     }
 
     @Override

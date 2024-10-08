@@ -31,6 +31,11 @@ spring:
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
 
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: DEBUG
+    io.r2dbc.postgresql.PARAM: DEBUG
+
 eureka:
   instance:
     prefer-ip-address: true
