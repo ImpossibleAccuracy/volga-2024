@@ -14,7 +14,7 @@ import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(fluent = true, chain = true)

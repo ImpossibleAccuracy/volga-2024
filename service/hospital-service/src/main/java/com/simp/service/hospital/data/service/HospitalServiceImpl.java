@@ -65,13 +65,9 @@ public class HospitalServiceImpl implements LocalHospitalService {
                                            List<String> rooms) {
         // TODO: check
 
-        var targetEntity = target instanceof HospitalEntity ? Mono.just((HospitalEntity) target) : hospitalRepository.findById(target.id());
+        var entity = (HospitalEntity) target;
 
-        return targetEntity
-                .map(s -> HospitalEntity.builder()
-                        .id(s.id())
-                        .createdAt(s.createdAt())
-                        .creator(s.creator())
+        return Mono.just(entity.toBuilder()
                         .name(name)
                         .address(address)
                         .contactPhone(contactPhone)

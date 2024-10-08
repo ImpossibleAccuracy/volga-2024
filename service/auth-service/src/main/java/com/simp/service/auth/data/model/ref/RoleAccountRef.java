@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "\"Role_Account\"")
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(fluent = true, chain = true)

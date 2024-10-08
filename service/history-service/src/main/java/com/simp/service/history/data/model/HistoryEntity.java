@@ -16,7 +16,7 @@ import java.time.Instant;
 
 @Table(name = "\"History\"")
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)

@@ -81,8 +81,9 @@ public class AccountServiceImpl implements LocalAccountService {
                                           List<String> roles) {
         // TODO: check access
 
-        AccountEntity update = AccountEntity.builder()
-                .id(target.id())
+        var entity = (AccountEntity) target;
+
+        AccountEntity update = entity.toBuilder()
                 .username(username)
                 .firstName(firstName)
                 .lastName(lastName)

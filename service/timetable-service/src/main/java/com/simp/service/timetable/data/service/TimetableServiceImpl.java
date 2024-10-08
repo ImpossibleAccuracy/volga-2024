@@ -67,6 +67,8 @@ public class TimetableServiceImpl implements LocalTimetableService {
     public Mono<? extends Timetable> update(Caller caller, Timetable target, Hospital hospital, Account doctor, Instant from, Instant to, Room room) {
         checkAppointmentDateRange(from, to);
 
+        var entity = (TimetableEntity) target;
+
         // TODO: check admin
         return appointmentService
                 .existsByTimetable(target)
@@ -77,8 +79,7 @@ public class TimetableServiceImpl implements LocalTimetableService {
                         sync.next(false);
                     }
                 })
-                .map(w -> (TimetableEntity.builder()
-                        .id(target.id())
+                .map(w -> (entity.toBuilder()
                         .hospital(hospital.id())
                         .doctor(doctor.id()) // TODO: check doctor
                         .from(from) // TODO: check time range

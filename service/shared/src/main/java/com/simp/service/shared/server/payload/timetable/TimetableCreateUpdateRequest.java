@@ -15,11 +15,9 @@ public record TimetableCreateUpdateRequest(
         @JsonProperty("doctorId")
         long doctorId,
 
-        @PositiveOrZero
         @JsonProperty("from")
         Instant from,
 
-        @PositiveOrZero
         @JsonProperty("to")
         Instant to,
 

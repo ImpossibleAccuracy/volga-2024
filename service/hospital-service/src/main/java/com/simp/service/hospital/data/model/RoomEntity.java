@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "\"Room\"")
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)

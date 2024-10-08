@@ -1,5 +1,6 @@
 package com.simp.service.timetable.data.service;
 
+import com.simp.service.shared.domain.exception.InvalidArgumentsException;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Appointment;
 import com.simp.service.shared.domain.model.Caller;
@@ -29,10 +30,27 @@ public class AppointmentServiceImpl implements LocalAppointmentService {
     public Mono<? extends Appointment> create(Caller caller, Timetable timetable, Instant time) {
         // TODO: check rights
 
-        // TODO: check time in bounds
+        var startTime = time.minus(TICKET_LENGTH_MINUTES, ChronoUnit.MINUTES).plus(1, ChronoUnit.MILLIS);
+        var endTime = time.plus(TICKET_LENGTH_MINUTES, ChronoUnit.MINUTES).minus(1, ChronoUnit.MILLIS);
 
-        return Mono
-                .just(AppointmentEntity.builder()
+        if (time.isBefore(timetable.from()) || endTime.isAfter(timetable.to())) {
+            throw new InvalidArgumentsException("Time out of timetable bounds");
+        }
+
+        return appointmentRepository
+                .existsByTimeBetweenAndTimetableAndDeletedFalse(
+                        startTime,
+                        endTime,
+                        timetable.id()
+                )
+                .handle((exists, sync) -> {
+                    if (exists) {
+                        throw new InvalidArgumentsException("There is another appointment on this time");
+                    } else {
+                        sync.next(false);
+                    }
+                })
+                .map(a -> AppointmentEntity.builder()
                         .time(time)
                         .timetable(timetable.id())
                         .build())

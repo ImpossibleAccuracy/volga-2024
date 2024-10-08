@@ -43,8 +43,9 @@ public class HistoryServiceImpl implements LocalHistoryService {
 
     @Override
     public Mono<? extends History> update(Caller caller, History target, Instant date, Account patient, Account doctor, Room room, String data) {
-        return Mono.just(HistoryEntity.builder()
-                        .id(target.id())
+        var entity = (HistoryEntity) target;
+
+        return Mono.just(entity.toBuilder()
                         .date(date)
                         .patient(patient.id())
                         .doctor(doctor.id())

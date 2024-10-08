@@ -12,7 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "\"RevokedToken\"")
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)

@@ -15,7 +15,7 @@ import java.time.Instant;
 
 @Table(name = "\"Appointments\"")
 @Data
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)

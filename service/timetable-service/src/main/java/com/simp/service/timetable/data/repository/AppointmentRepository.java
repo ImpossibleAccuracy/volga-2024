@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+
 @Repository
 public interface AppointmentRepository extends ReactiveCrudRepository<AppointmentEntity, Long> {
     Flux<AppointmentEntity> findByTimetableAndDeletedFalse(long timetable);
@@ -21,4 +23,6 @@ public interface AppointmentRepository extends ReactiveCrudRepository<Appointmen
     Mono<Void> deleteSoft(Long id);
 
     Mono<Boolean> existsByTimetableAndDeletedFalse(long timetable);
+
+    Mono<Boolean> existsByTimeBetweenAndTimetableAndDeletedFalse(Instant timeStart, Instant timeEnd, long timetable);
 }
