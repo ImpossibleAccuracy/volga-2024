@@ -16,6 +16,8 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class TokenServiceImpl implements TokenService {
+    private final static String claimName = "user_id";
+
     private final TokenProperties tokenProperties;
 
     @Override
@@ -29,7 +31,7 @@ public class TokenServiceImpl implements TokenService {
 
                 if (jwt.getExpiresAt().before(new Date())) return null;
 
-                var claim = jwt.getClaim(tokenProperties.claimName);
+                var claim = jwt.getClaim(claimName);
 
                 return claim.asLong();
             } catch (JWTDecodeException | NullPointerException e) {
@@ -43,7 +45,7 @@ public class TokenServiceImpl implements TokenService {
         return JWT.create()
                 .withAudience(tokenProperties.audience)
                 .withIssuer(tokenProperties.issuer)
-                .withClaim(tokenProperties.claimName, account.id())
+                .withClaim(claimName, account.id())
                 .withExpiresAt(new Date(System.currentTimeMillis() + tokenProperties.ttl))
                 .sign(Algorithm.HMAC256(tokenProperties.secret));
     }

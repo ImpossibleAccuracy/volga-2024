@@ -1,7 +1,3 @@
-management:
-  server:
-    port: ${HEALTHCHECK_PORT}
-
 server:
   port: ${DISCOVERY_PORT}
 
@@ -18,5 +14,3 @@ eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
-    serviceUrl:
-      defaultZone: http://${DISCOVERY_USER}:${DISCOVERY_PASSWORD}@${DISCOVERY_HOST}:${DISCOVERY_PORT}/eureka/

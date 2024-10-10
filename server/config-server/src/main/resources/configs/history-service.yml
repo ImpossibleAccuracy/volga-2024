@@ -1,19 +1,9 @@
-management:
-  server:
-    port: ${HEALTHCHECK_PORT}
-
 server:
   port: ${HISTORY_SERVICE_PORT}
 
 app:
   services:
     history: false
-  security:
-    service-credentials:
-      - name: TEST_USER_1
-        password: TEST_USER_PASS_1
-      - name: TEST_USER_2
-        password: TEST_USER_PASS_2
 
 spring:
   cloud:
@@ -25,15 +15,6 @@ spring:
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
 
-logging:
-  level:
-    io.r2dbc.postgresql.QUERY: DEBUG
-    io.r2dbc.postgresql.PARAM: DEBUG
-
 eureka:
-  instance:
-    prefer-ip-address: true
   client:
     fetch-registry: true
-    serviceUrl:
-      defaultZone: http://${DISCOVERY_USER}:${DISCOVERY_PASSWORD}@${DISCOVERY_HOST}:${DISCOVERY_PORT}/eureka/

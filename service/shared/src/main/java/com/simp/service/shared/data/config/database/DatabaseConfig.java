@@ -1,6 +1,7 @@
 package com.simp.service.shared.data.config.database;
 
 import com.simp.service.shared.domain.model.Account;
+import com.simp.service.shared.domain.model.Authorization;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,8 @@ public class DatabaseConfig {
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
                 .map(Authentication::getPrincipal)
-                .map(Account.class::cast)
+                .map(Authorization.class::cast)
+                .map(Authorization::account)
                 .map(Account::id);
     }
 }

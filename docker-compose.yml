@@ -119,3 +119,25 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+  timetable-service:
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    build:
+      dockerfile: service/timetable-service/Dockerfile
+      context: .
+    env_file:
+      - .env
+    environment: *discovery-props
+    ports:
+      - "8013:${TIMETABLE_SERVICE_PORT}"
+    healthcheck:
+      test: "curl --fail --silent localhost:${HEALTHCHECK_PORT}/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s

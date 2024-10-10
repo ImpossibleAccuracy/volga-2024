@@ -1,0 +1,22 @@
+management:
+  server:
+    port: ${HEALTHCHECK_PORT}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_USER}:${DISCOVERY_PASSWORD}@${DISCOVERY_HOST}:${DISCOVERY_PORT}/eureka/
+
+server:
+  error:
+    include-message: always
+
+app:
+  security:
+    service-credentials:
+      - name: TEST_USER_1
+        password: TEST_USER_PASS_1
+      - name: TEST_USER_2
+        password: TEST_USER_PASS_2

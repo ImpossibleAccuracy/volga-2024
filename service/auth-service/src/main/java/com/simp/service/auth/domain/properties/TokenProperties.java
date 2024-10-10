@@ -9,6 +9,5 @@ public class TokenProperties {
     public final String secret;
     public final String issuer;
     public final String audience;
-    public final String claimName;
     public final long ttl;
 }

@@ -1,0 +1,9 @@
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: DEBUG
+    io.r2dbc.postgresql.PARAM: DEBUG
+
+reactive:
+  feign:
+    logger:
+      enabled: true
