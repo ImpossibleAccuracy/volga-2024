@@ -16,6 +16,10 @@ dependencies {
     api(libs.bundles.spring.cloud.client)
     implementation(libs.gson)
 
+    // SWAGGER
+    api(libs.spring.openapi.ui)
+    api(libs.spring.openapi.api)
+
     // FEIGN
     api(libs.reactivefeign.webclient)
     api(libs.reactivefeign.cloud)

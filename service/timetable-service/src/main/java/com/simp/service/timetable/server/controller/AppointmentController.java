@@ -8,6 +8,7 @@ import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.timetable.domain.service.LocalAppointmentService;
 import com.simp.service.timetable.domain.service.LocalTimetableService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class AppointmentController {
     private final LocalTimetableService timetableService;
     private final LocalAppointmentService appointmentService;

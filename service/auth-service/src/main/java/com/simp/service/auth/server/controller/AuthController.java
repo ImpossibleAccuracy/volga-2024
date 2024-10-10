@@ -16,6 +16,7 @@ import com.simp.service.shared.server.payload.token.ValidateTokenRequest;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.shared.service.scheme.AuthControllerScheme;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -53,6 +54,7 @@ public class AuthController implements AuthControllerScheme {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(ApiScheme.AccountService.Auth.SignOut)
+    @SecurityRequirement(name = "bearerAuth")
     public Mono<Void> signOut(@RequestHeader HttpHeaders headers) {
         return UserHolder
                 .requireCaller(headers)
@@ -90,6 +92,7 @@ public class AuthController implements AuthControllerScheme {
     @Override
     @PreAuthorize("hasRole('" + AuthConstants.SERVICE_ROLE + "')")
     @PostMapping(ApiScheme.AccountService.Auth.Full)
+    @SecurityRequirement(name = "bearerAuth")
     public Mono<AuthorizationDto> getAuthData(@RequestHeader(AuthConstants.AUTH_HEADER) String token) {
         return authService
                 .authUser(token)

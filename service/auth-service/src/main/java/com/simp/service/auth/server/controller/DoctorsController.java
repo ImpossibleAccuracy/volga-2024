@@ -8,6 +8,7 @@ import com.simp.service.shared.server.payload.dto.AccountDto;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.shared.service.scheme.DoctorControllerScheme;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class DoctorsController implements DoctorControllerScheme {
     private final LocalDoctorService doctorService;
 

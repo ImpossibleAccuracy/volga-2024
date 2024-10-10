@@ -10,6 +10,7 @@ import com.simp.service.shared.server.payload.dto.HistoryDto;
 import com.simp.service.shared.server.payload.history.HistoryCreateUpdateRequest;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class HistoryController {
     private final LocalHistoryService historyService;
     private final AccountService accountService;

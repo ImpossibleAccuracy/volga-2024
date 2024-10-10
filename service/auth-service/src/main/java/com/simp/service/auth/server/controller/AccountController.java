@@ -6,6 +6,7 @@ import com.simp.service.shared.server.payload.account.request.AccountUpdateReque
 import com.simp.service.shared.server.payload.dto.AccountDto;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class AccountController {
     private final LocalAccountService accountService;
 

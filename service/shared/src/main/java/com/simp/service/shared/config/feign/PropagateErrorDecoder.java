@@ -1,4 +1,4 @@
-package com.simp.service.shared.data.config.feign;
+package com.simp.service.shared.config.feign;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;

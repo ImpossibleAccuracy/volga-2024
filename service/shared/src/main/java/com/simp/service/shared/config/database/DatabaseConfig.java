@@ -1,4 +1,4 @@
-package com.simp.service.shared.data.config.database;
+package com.simp.service.shared.config.database;
 
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Authorization;

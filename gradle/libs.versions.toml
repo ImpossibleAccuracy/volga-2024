@@ -2,6 +2,7 @@
 spring = "3.3.4"
 spring-retry = "2.0.9"
 spring-cloud = "4.1.3"
+spring-openapi = "2.6.0"
 netty = "1.1.22"
 
 reactivefeign = "4.2.1"
@@ -32,6 +33,10 @@ spring-retry = { module = "org.springframework.retry:spring-retry", version.ref 
 spring-cloud-eureka-server = { module = "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server", version.ref = "spring-cloud" }
 spring-cloud-config-server = { module = "org.springframework.cloud:spring-cloud-config-server", version.ref = "spring-cloud" }
 spring-cloud-bootstrap = { module = "org.springframework.cloud:spring-cloud-starter-bootstrap", version.ref = "spring-cloud" }
+
+# SWAGGER
+spring-openapi-ui = { module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "spring-openapi" }
+spring-openapi-api = { module = "org.springdoc:springdoc-openapi-starter-webflux-api", version.ref = "spring-openapi" }
 
 # FEIGN
 reactivefeign-webclient = { module = "com.playtika.reactivefeign:feign-reactor-webclient", version.ref = "reactivefeign" }

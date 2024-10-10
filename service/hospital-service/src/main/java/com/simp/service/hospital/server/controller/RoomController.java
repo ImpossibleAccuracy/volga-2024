@@ -9,6 +9,7 @@ import com.simp.service.shared.server.payload.shared.PaginationRequest;
 import com.simp.service.shared.server.security.UserHolder;
 import com.simp.service.shared.service.ApiScheme;
 import com.simp.service.shared.service.scheme.RoomControllerScheme;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class RoomController implements RoomControllerScheme {
     private final LocalRoomService roomService;
     private final LocalHospitalService hospitalService;
