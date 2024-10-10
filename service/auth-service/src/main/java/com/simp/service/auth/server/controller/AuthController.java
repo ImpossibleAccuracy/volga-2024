@@ -91,7 +91,7 @@ public class AuthController implements AuthControllerScheme {
 
     @Override
     @PreAuthorize("hasRole('" + AuthConstants.SERVICE_ROLE + "')")
-    @PostMapping(ApiScheme.AccountService.Auth.Full)
+    @GetMapping(ApiScheme.AccountService.Auth.Full)
     @SecurityRequirement(name = "bearerAuth")
     public Mono<AuthorizationDto> getAuthData(@RequestHeader(AuthConstants.AUTH_HEADER) String token) {
         return authService

@@ -45,7 +45,7 @@ public class RoleServiceImpl implements RoleService {
                                     .noneMatch(r2 -> r.equalsIgnoreCase(r2.title().name())))
                             .toList();
 
-                    var newRoles = roleRepository.findByTitleInIgnoreCase(newRolesTitles)
+                    var newRoles = roleRepository.findByTitleIn(newRolesTitles)
                             .map(role -> RoleAccountRef
                                     .builder()
                                     .role(role.id())

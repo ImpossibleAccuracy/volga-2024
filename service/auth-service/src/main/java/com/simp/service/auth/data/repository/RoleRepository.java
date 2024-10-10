@@ -17,5 +17,5 @@ public interface RoleRepository extends ReactiveCrudRepository<RoleEntity, Long>
             """)
     Flux<RoleEntity> findByAccountId(Long id);
 
-    Flux<RoleEntity> findByTitleInIgnoreCase(Collection<String> titles);
+    Flux<RoleEntity> findByTitleIn(Collection<String> titles);
 }
