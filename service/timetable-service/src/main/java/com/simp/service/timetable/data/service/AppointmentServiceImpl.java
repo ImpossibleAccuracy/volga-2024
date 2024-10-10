@@ -1,11 +1,13 @@
 package com.simp.service.timetable.data.service;
 
 import com.simp.service.shared.domain.exception.InvalidArgumentsException;
+import com.simp.service.shared.domain.exception.OperationDeniedException;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Appointment;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.DateRange;
 import com.simp.service.shared.domain.model.Timetable;
+import com.simp.service.shared.domain.security.UserRole;
 import com.simp.service.timetable.data.model.AppointmentEntity;
 import com.simp.service.timetable.data.repository.AppointmentRepository;
 import com.simp.service.timetable.domain.service.LocalAppointmentService;
@@ -28,8 +30,6 @@ public class AppointmentServiceImpl implements LocalAppointmentService {
 
     @Override
     public Mono<? extends Appointment> create(Caller caller, Timetable timetable, Instant time) {
-        // TODO: check rights
-
         var startTime = time.minus(TICKET_LENGTH_MINUTES, ChronoUnit.MINUTES).plus(1, ChronoUnit.MILLIS);
         var endTime = time.plus(TICKET_LENGTH_MINUTES, ChronoUnit.MINUTES).minus(1, ChronoUnit.MILLIS);
 
@@ -59,10 +59,16 @@ public class AppointmentServiceImpl implements LocalAppointmentService {
 
     @Override
     public Mono<? extends Appointment> get(Caller caller, long id) {
-        // TODO: check rights
         return appointmentRepository
                 .findByIdAndDeletedFalse(id)
-                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Appointment not found")));
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Appointment not found")))
+                .handle((a, sync) -> {
+                    if (a.creator() != caller.account().id() && !caller.hasRole(UserRole.MANAGER)) {
+                        throw new OperationDeniedException("No such permissions");
+                    } else {
+                        sync.next(a);
+                    }
+                });
     }
 
     @Override
@@ -93,7 +99,10 @@ public class AppointmentServiceImpl implements LocalAppointmentService {
 
     @Override
     public Mono<Void> delete(Caller caller, Appointment appointment) {
-        // TODO: check rights
+        if (appointment.creator() != caller.account().id() && caller.hasRole(UserRole.MANAGER)) {
+            throw new OperationDeniedException("No such permissions");
+        }
+
         return appointmentRepository.deleteSoft(appointment.id());
     }
 

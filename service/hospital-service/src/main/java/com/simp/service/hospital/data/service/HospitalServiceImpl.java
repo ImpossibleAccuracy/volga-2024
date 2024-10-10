@@ -8,6 +8,7 @@ import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Hospital;
 import com.simp.service.shared.domain.model.Pagination;
+import com.simp.service.shared.domain.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -27,7 +28,7 @@ public class HospitalServiceImpl implements LocalHospitalService {
                                            String address,
                                            String contactPhone,
                                            List<String> rooms) {
-        // TODO: check
+        caller.requireRole(UserRole.ADMIN);
 
         return Mono.just(HospitalEntity.builder()
                         .name(name)
@@ -42,8 +43,6 @@ public class HospitalServiceImpl implements LocalHospitalService {
 
     @Override
     public Mono<? extends Hospital> get(Caller caller, long id) {
-        // TODO: check
-
         return hospitalRepository
                 .findByIdAndDeletedFalse(id)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Hospital not found")));
@@ -51,8 +50,6 @@ public class HospitalServiceImpl implements LocalHospitalService {
 
     @Override
     public Flux<? extends Hospital> getList(Caller caller, Pagination<Integer> pagination) {
-        // TODO: check
-
         return hospitalRepository.findAllPaginated(pagination.from(), pagination.count());
     }
 
@@ -63,7 +60,7 @@ public class HospitalServiceImpl implements LocalHospitalService {
                                            String address,
                                            String contactPhone,
                                            List<String> rooms) {
-        // TODO: check
+        caller.requireRole(UserRole.ADMIN);
 
         var entity = (HospitalEntity) target;
 
@@ -80,7 +77,7 @@ public class HospitalServiceImpl implements LocalHospitalService {
 
     @Override
     public Mono<Void> delete(Caller caller, Hospital hospital) {
-        // TODO: check
+        caller.requireRole(UserRole.ADMIN);
 
         return hospitalRepository.deleteSoft(hospital.id());
     }

@@ -7,6 +7,7 @@ import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Hospital;
 import com.simp.service.shared.domain.model.Room;
+import com.simp.service.shared.domain.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -21,7 +22,7 @@ public class RoomServiceImpl implements LocalRoomService {
 
     @Override
     public Mono<Void> createHospitalRooms(Caller caller, Hospital hospital, List<String> rooms) {
-        // TODO: check caller
+        caller.requireRole(UserRole.ADMIN);
 
         return roomRepository
                 .findByHospital(hospital.id())

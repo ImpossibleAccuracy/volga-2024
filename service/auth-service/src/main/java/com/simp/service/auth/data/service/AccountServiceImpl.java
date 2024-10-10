@@ -4,10 +4,12 @@ import com.simp.service.auth.data.model.AccountEntity;
 import com.simp.service.auth.data.repository.AccountRepository;
 import com.simp.service.auth.domain.service.LocalAccountService;
 import com.simp.service.auth.domain.service.RoleService;
+import com.simp.service.shared.domain.exception.OperationDeniedException;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.Account;
 import com.simp.service.shared.domain.model.Caller;
 import com.simp.service.shared.domain.model.Pagination;
+import com.simp.service.shared.domain.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class AccountServiceImpl implements LocalAccountService {
 
     @Override
     public Mono<? extends Account> create(Caller caller, String firstName, String lastName, String username, String password, List<String> roles) {
-        // TODO: check admin
+        caller.requireRole(UserRole.ADMIN);
 
         roleService.verifyRoles(roles);
 
@@ -34,7 +36,6 @@ public class AccountServiceImpl implements LocalAccountService {
                 .firstName(firstName)
                 .lastName(lastName)
                 .password(passwordEncoder.encode(password))
-                // TODO: add roles
                 .build();
 
         return accountRepository
@@ -51,12 +52,16 @@ public class AccountServiceImpl implements LocalAccountService {
 
     @Override
     public Mono<? extends Account> get(Caller caller, long id) {
-        // TODO: check access
+        if (caller.hasRole(UserRole.ADMIN) || caller.account().id() != id) {
+            throw new OperationDeniedException("No such permissions");
+        }
+
         return getAccountUnsecured(id);
     }
 
     @Override
     public Flux<? extends Account> getList(Caller caller, Pagination<Integer> pagination) {
+        caller.requireRole(UserRole.ADMIN);
         return accountRepository.findAllPaginated(pagination.from(), pagination.count());
     }
 
@@ -81,7 +86,7 @@ public class AccountServiceImpl implements LocalAccountService {
                                           String firstName,
                                           String password,
                                           List<String> roles) {
-        // TODO: check access
+        caller.requireRole(UserRole.ADMIN);
 
         roleService.verifyRoles(roles);
 
@@ -101,7 +106,7 @@ public class AccountServiceImpl implements LocalAccountService {
 
     @Override
     public Mono<Void> delete(Caller caller, Account target) {
-        // TODO: check access
+        caller.requireRole(UserRole.ADMIN);
 
         return accountRepository.deleteSoft(target.id());
     }

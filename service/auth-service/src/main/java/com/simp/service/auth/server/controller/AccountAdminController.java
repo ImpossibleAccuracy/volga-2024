@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 public class AccountAdminController implements AccountControllerScheme {
     private final LocalAccountService accountService;
 
-    // TODO: admin
     @PostMapping(ApiScheme.AccountService.Account.Accounts)
     public Mono<AccountDto> create(@RequestHeader HttpHeaders headers,
                                    @RequestBody @Valid AccountCreateUpdateRequest request) {
@@ -39,7 +38,6 @@ public class AccountAdminController implements AccountControllerScheme {
                 .map(Mappers::toDto);
     }
 
-    // TODO: admin
     @GetMapping(ApiScheme.AccountService.Account.AccountDetails)
     public Mono<AccountDto> get(@PathVariable("id") long id,
                                 @RequestHeader(AuthConstants.AUTH_HEADER) String token) {
@@ -49,7 +47,6 @@ public class AccountAdminController implements AccountControllerScheme {
                 .map(Mappers::toDto);
     }
 
-    // TODO: admin
     @GetMapping(ApiScheme.AccountService.Account.Accounts)
     public Flux<AccountDto> getAll(@RequestHeader HttpHeaders headers,
                                    @Valid PaginationRequest request) {
@@ -60,7 +57,6 @@ public class AccountAdminController implements AccountControllerScheme {
                 .map(Mappers::toDto);
     }
 
-    // TODO: admin
     @PutMapping(ApiScheme.AccountService.Account.AccountDetails)
     public Mono<AccountDto> updateAccount(@PathVariable("id") long id,
                                           @RequestHeader HttpHeaders headers,
@@ -81,7 +77,6 @@ public class AccountAdminController implements AccountControllerScheme {
                 .map(Mappers::toDto);
     }
 
-    // TODO: admin
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(ApiScheme.AccountService.Account.AccountDetails)
     public Mono<Void> deleteAccount(@PathVariable("id") long id,

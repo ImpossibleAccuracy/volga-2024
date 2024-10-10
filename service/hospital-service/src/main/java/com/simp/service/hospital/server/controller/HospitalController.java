@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 public class HospitalController implements HospitalControllerScheme {
     private final LocalHospitalService hospitalService;
 
-    // TODO: admin
     @PostMapping(ApiScheme.HospitalsService.Hospitals)
     public Mono<HospitalDto> newHospital(@RequestHeader HttpHeaders headers,
                                          @RequestBody @Valid HospitalCreateUpdateRequest request) {
@@ -57,7 +56,6 @@ public class HospitalController implements HospitalControllerScheme {
                 .map(Mappers::toDto);
     }
 
-    // TODO: admin
     @PutMapping(ApiScheme.HospitalsService.HospitalDetails)
     public Mono<HospitalDto> update(@RequestHeader HttpHeaders headers,
                                     @PathVariable("id") long id,
@@ -76,7 +74,6 @@ public class HospitalController implements HospitalControllerScheme {
                 .map(Mappers::toDto);
     }
 
-    // TODO: admin
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(ApiScheme.HospitalsService.HospitalDetails)
     public Mono<Void> delete(@RequestHeader HttpHeaders headers,

@@ -3,6 +3,8 @@ package com.simp.service.timetable.data.service;
 import com.simp.service.shared.domain.exception.InvalidArgumentsException;
 import com.simp.service.shared.domain.exception.ResourceNotFoundException;
 import com.simp.service.shared.domain.model.*;
+import com.simp.service.shared.domain.security.UserRole;
+import com.simp.service.shared.domain.service.DoctorService;
 import com.simp.service.timetable.data.model.TimetableEntity;
 import com.simp.service.timetable.data.repository.TimetableRepository;
 import com.simp.service.timetable.domain.service.LocalAppointmentService;
@@ -22,17 +24,19 @@ public class TimetableServiceImpl implements LocalTimetableService {
     private static final int MAX_APPOINTMENT_DURATION_HOURS = 12;
 
     private final TimetableRepository timetableRepository;
-    private final LocalAppointmentService appointmentService; // TODO
+    private final LocalAppointmentService appointmentService;
+    private final DoctorService doctorService;
 
     @Override
     public Mono<? extends Timetable> create(Caller caller, Hospital hospital, Account doctor, Instant from, Instant to, Room room) {
+        caller.requireRole(UserRole.MANAGER);
+
         checkAppointmentDateRange(from, to);
 
-        // TODO: check admin
         return Mono.just(TimetableEntity.builder()
                         .hospital(hospital.id())
-                        .doctor(doctor.id()) // TODO: check doctor
-                        .from(from) // TODO: check time range
+                        .doctor(doctor.id())
+                        .from(from)
                         .to(to)
                         .room(room.id())
                         .build())
@@ -41,7 +45,6 @@ public class TimetableServiceImpl implements LocalTimetableService {
 
     @Override
     public Mono<? extends Timetable> get(Caller caller, long id) {
-        // TODO: check admin
         return timetableRepository
                 .findByIdAndDeletedFalse(id)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Timetable not found")));
@@ -59,17 +62,18 @@ public class TimetableServiceImpl implements LocalTimetableService {
 
     @Override
     public Flux<? extends Timetable> getByRoom(Caller caller, Room room, Pagination<Instant> pagination) {
-        // TODO: check admin
+        caller.requireRole(UserRole.DOCTOR, UserRole.MANAGER);
         return timetableRepository.findByRoomAndDateRange(room.id(), pagination.from(), pagination.count());
     }
 
     @Override
     public Mono<? extends Timetable> update(Caller caller, Timetable target, Hospital hospital, Account doctor, Instant from, Instant to, Room room) {
+        caller.requireRole(UserRole.MANAGER);
+
         checkAppointmentDateRange(from, to);
 
         var entity = (TimetableEntity) target;
 
-        // TODO: check admin
         return appointmentService
                 .existsByTimetable(target)
                 .handle((exists, sync) -> {
@@ -81,8 +85,8 @@ public class TimetableServiceImpl implements LocalTimetableService {
                 })
                 .map(w -> (entity.toBuilder()
                         .hospital(hospital.id())
-                        .doctor(doctor.id()) // TODO: check doctor
-                        .from(from) // TODO: check time range
+                        .doctor(doctor.id())
+                        .from(from)
                         .to(to)
                         .room(room.id())
                         .build()))
@@ -91,19 +95,19 @@ public class TimetableServiceImpl implements LocalTimetableService {
 
     @Override
     public Mono<Void> deleteByHospital(Caller caller, Hospital hospital) {
-        // TODO: check admin
+        caller.requireRole(UserRole.MANAGER);
         return timetableRepository.deleteSoftByHospital(hospital.id());
     }
 
     @Override
     public Mono<Void> deleteByDoctor(Caller caller, Account doctor) {
-        // TODO: check admin
+        caller.requireRole(UserRole.MANAGER);
         return timetableRepository.deleteSoftByDoctor(doctor.id());
     }
 
     @Override
     public Mono<Void> delete(Caller caller, Timetable target) {
-        // TODO: check admin
+        caller.requireRole(UserRole.MANAGER);
         return timetableRepository.deleteSoft(target.id());
     }
 
@@ -125,7 +129,7 @@ public class TimetableServiceImpl implements LocalTimetableService {
         }
 
         if (fromZoned.getSecond() != 0 || toZoned.getSecond() != 0) {
-            throw new InvalidArgumentsException("No seconds allowed! 🤡"); // TODO
+            throw new InvalidArgumentsException("No seconds allowed!");
         }
     }
 }

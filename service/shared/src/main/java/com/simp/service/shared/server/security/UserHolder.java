@@ -32,7 +32,6 @@ public final class UserHolder {
                 .switchIfEmpty(Mono.error(new UnauthorizedException("No user presented")));
     }
 
-    @Deprecated
     public static Mono<Caller> requireCaller(HttpHeaders headers) {
         return requireCaller(headers.getFirst(AuthConstants.AUTH_HEADER));
     }

@@ -4,13 +4,24 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @RequiredArgsConstructor
 @Accessors(fluent = true)
 public enum UserRole {
-    ADMIN(0),
-    USER(0),
-    DOCTOR(0);
+    ADMIN,
+    MANAGER,
+    DOCTOR;
 
-    private final int priority;
+    private List<UserRole> childRoles = new ArrayList<>();
+
+    public boolean include(UserRole other) {
+        return this == other || childRoles.stream().anyMatch(r -> r.include(other));
+    }
+
+    static {
+        ADMIN.childRoles = List.of(UserRole.MANAGER);
+    }
 }
