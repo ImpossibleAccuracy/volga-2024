@@ -4,3 +4,7 @@
 2. Hospital URL: http://localhost:8011/webjars/swagger-ui/index.html
 3. Timetable URL: http://localhost:8013/webjars/swagger-ui/index.html
 4. Document URL: http://localhost:8012/webjars/swagger-ui/index.html
+
+# Дополнительное задание:
+
+Logstash docker-образ не доступен без VPN, так что было принято решение не усложнять проект 2 базами.
